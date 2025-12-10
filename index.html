@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Design Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Microsoft JhengHei", "Helvetica Neue", sans-serif; }
+        
+        body { background-color: var(--bg-color); color: #333; padding-bottom: 50px; }
+
+        /* --- Header --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        header h1 { margin-bottom: 10px; font-size: 2.5rem; }
+        header p { color: #bdc3c7; font-size: 1.1rem; }
+
+        /* --- Filter Buttons --- */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            gap: 10px;
+            padding: 0 20px;
+        }
+        .filter-btn {
+            padding: 10px 20px;
+            border: none;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--primary-color);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* --- Grid Layout --- */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Card Style --- */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+        
+        .card-img-wrapper {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background-color: #eee;
+            position: relative;
+        }
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 讓圖片填滿但不變形 */
+            transition: transform 0.5s;
+        }
+        .card:hover .card-img-wrapper img { transform: scale(1.05); }
+
+        /* 檔案類型標籤 */
+        .type-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            z-index: 2;
+        }
+
+        .card-content { padding: 20px; }
+        .card-title { font-size: 1.1rem; margin-bottom: 8px; color: var(--primary-color); }
+        .card-desc { font-size: 0.9rem; color: #666; line-height: 1.5; }
+
+        /* --- Lightbox (點擊後的放大視窗) --- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 80vh;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(255,255,255,0.1);
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px; right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+        }
+        .lb-nav-btn {
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 20px;
+            user-select: none;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .lb-prev { left: 10px; }
+        .lb-next { right: 10px; }
+        .lb-caption { color: #ccc; margin-top: 15px; font-size: 1.1rem; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>My Design Portfolio</h1>
+        <p>設計作品 | 型錄編排 | 網頁設計 | 專案規劃</p>
+    </header>
+
+    <div class="filter-container" id="filterContainer">
+        <button class="filter-btn active" onclick="filterGallery('all')">全部作品</button>
+        <button class="filter-btn" onclick="filterGallery('posters')">海報設計</button>
+        <button class="filter-btn" onclick="filterGallery('catalogs')">產品型錄</button>
+        <button class="filter-btn" onclick="filterGallery('presentations')">簡報專案</button>
+        <button class="filter-btn" onclick="filterGallery('merchandise')">周邊設計</button>
+        <button class="filter-btn" onclick="filterGallery('web-design')">網頁設計</button>
+    </div>
+
+    <div class="gallery-container" id="galleryContainer">
+        </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="close-btn" onclick="closeLightbox()">&times;</span>
+        <div class="lb-nav-btn lb-prev" onclick="changeImage(-1)">&#10094;</div>
+        <img id="lightbox-img" src="">
+        <div class="lb-nav-btn lb-next" onclick="changeImage(1)">&#10095;</div>
+        <div class="lb-caption" id="lightbox-caption"></div>
+    </div>
+
+    <script src="data.js"></script>
+
+    <script>
+        const galleryContainer = document.getElementById('galleryContainer');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        // 初始化：顯示所有作品
+        window.onload = () => {
+            renderGallery(portfolioData);
+        };
+
+        // 渲染作品卡片功能
+        function renderGallery(items) {
+            galleryContainer.innerHTML = ''; // 清空畫面
+            
+            items.forEach(item => {
+                // 決定封面圖：如果是多圖陣列，取第一張；如果是單圖，直接取用
+                let coverImage = "";
+                if (item.images && item.images.length > 0) {
+                    coverImage = item.images[0];
+                } else {
+                    coverImage = item.image; // 相容舊寫法
+                }
+
+                // 決定點擊後的行為
+                // 1. 如果有 type (pdf/canva/link)，優先開啟連結
+                // 2. 如果沒有 type，但有 images 陣列，開啟圖片燈箱
+                let clickAction = "";
+                let badgeIcon = "";
+                
+                if (item.type === 'pdf') {
+                    clickAction = `window.open('${item.link}', '_blank')`;
+                    badgeIcon = '<i class="fas fa-file-pdf"></i> PDF';
+                } else if (item.type === 'canva') {
+                    clickAction = `window.open('${item.link}', '_blank')`;
+                    badgeIcon = '<i class="fas fa-play-circle"></i> Canva';
+                } else if (item.type === 'link') {
+                    clickAction = `window.open('${item.link}', '_blank')`;
+                    badgeIcon = '<i class="fas fa-link"></i> Link';
+                } else {
+                    // 預設行為：開啟圖片燈箱
+                    // 為了傳遞陣列資料，我們把索引存在 data attribute
+                    // 注意：這裡我們需要把物件轉成字串傳進去 (簡易做法)
+                    clickAction = `openLightbox('${item.title}')`;
+                    badgeIcon = '<i class="fas fa-image"></i> Gallery';
+                }
+
+                const cardHTML = `
+                    <div class="card" onclick="${clickAction}">
+                        <div class="card-img-wrapper">
+                            ${item.type ? `<div class="type-badge">${badgeIcon}</div>` : ''}
+                            <img src="${coverImage}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                        </div>
+                        <div class="card-content">
+                            <h3 class="card-title">${item.title}</h3>
+                            ${item.description ? `<p class="card-desc">${item.description}</p>` : ''}
+                        </div>
+                    </div>
+                `;
+                galleryContainer.innerHTML += cardHTML;
+            });
+        }
+
+        // 篩選功能
+        function filterGallery(category) {
+            // 按鈕變色處理
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // 篩選資料
+            if (category === 'all') {
+                renderGallery(portfolioData);
+            } else {
+                const filtered = portfolioData.filter(item => item.category === category);
+                renderGallery(filtered);
+            }
+        }
+
+        // --- Lightbox 邏輯 (簡易版) ---
+        let currentGroupImages = [];
+        let currentImageIndex = 0;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const prevBtn = document.querySelector('.lb-prev');
+        const nextBtn = document.querySelector('.lb-next');
+
+        function openLightbox(title) {
+            // 找出被點擊的那個作品資料
+            const item = portfolioData.find(d => d.title === title);
+            if (!item) return;
+
+            // 取得該作品的所有圖片
+            if (item.images && item.images.length > 0) {
+                currentGroupImages = item.images;
+            } else if (item.image) {
+                currentGroupImages = [item.image];
+            }
+
+            currentImageIndex = 0;
+            updateLightboxContent();
+            
+            // 顯示燈箱
+            lightbox.style.display = 'flex';
+        }
+
+        function updateLightboxContent() {
+            lightboxImg.src = currentGroupImages[currentImageIndex];
+            lightboxCaption.innerText = `${currentImageIndex + 1} / ${currentGroupImages.length}`;
+
+            // 如果只有一張圖，隱藏左右箭頭
+            if (currentGroupImages.length <= 1) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            } else {
+                prevBtn.style.display = 'block';
+                nextBtn.style.display = 'block';
+            }
+        }
+
+        function changeImage(n) {
+            currentImageIndex += n;
+            if (currentImageIndex >= currentGroupImages.length) currentImageIndex = 0;
+            if (currentImageIndex < 0) currentImageIndex = currentGroupImages.length - 1;
+            updateLightboxContent();
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+        }
+        
+        // 點擊背景關閉
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+    </script>
+</body>
+</html>
