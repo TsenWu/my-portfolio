@@ -3,180 +3,284 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Design Portfolio</title>
+    <title>金鍏電子設計作品集</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --accent-color: #e74c3c;
-            --bg-color: #f4f7f6;
-            --card-bg: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            --text-color: #2c3e50;
+            --accent-color: #006dae; /* 金鍏的藍色調 */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Microsoft JhengHei", "Helvetica Neue", sans-serif; }
         
-        body { background-color: var(--bg-color); color: #333; padding-bottom: 50px; }
+        /* 背景設定：這裡換了一張更有質感的自然背景 */
+        body { 
+            background: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2800&auto=format&fit=crop') no-repeat center center fixed; 
+            background-size: cover;
+            color: var(--text-color); 
+            padding-bottom: 50px;
+            min-height: 100vh;
+        }
 
+        /* --- 毛玻璃面板共用樣式 --- */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px); /* 關鍵：模糊背後 */
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        /* --- Header --- */
         header {
-            background-color: var(--primary-color);
-            color: white;
+            margin: 30px auto;
+            max-width: 1200px;
             padding: 40px 20px;
             text-align: center;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
-        header h1 { margin-bottom: 10px; font-size: 2.5rem; }
-        header p { color: #bdc3c7; font-size: 1.1rem; }
+        header h1 { margin-bottom: 10px; font-size: 2.8rem; letter-spacing: 2px; }
+        header p { font-size: 1.2rem; opacity: 0.9; font-weight: 300; }
 
+        /* --- Filter Buttons --- */
         .filter-container {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            margin: 30px 0;
-            gap: 10px;
-            padding: 0 20px;
+            margin: 0 auto 40px;
+            gap: 15px;
+            padding: 20px;
+            max-width: 900px;
         }
+        
         .filter-btn {
-            padding: 10px 20px;
-            border: none;
-            background: white;
-            border-radius: 25px;
+            padding: 10px 25px;
+            border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
-            color: var(--primary-color);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: 0.3s;
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
-        .filter-btn.active, .filter-btn:hover {
-            background-color: var(--accent-color);
-            color: white;
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(255, 255, 255, 0.85);
+            color: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-shadow: none;
         }
 
+        /* --- Grid Layout --- */
         .gallery-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
+        /* --- Card Style (毛玻璃卡片) --- */
         .card {
-            background: var(--card-bg);
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.65); /* 卡片稍微不透明一點，閱讀較清楚 */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; /* 更有彈性的動畫 */
             cursor: pointer;
             position: relative;
+            
+            /* 進場動畫設定 */
+            opacity: 0; 
+            animation: fadeUp 0.8s ease forwards;
         }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
         
+        .card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15); 
+            background: rgba(255, 255, 255, 0.85);
+        }
+        
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .card-img-wrapper {
             width: 100%;
-            height: 200px;
+            height: 220px;
             overflow: hidden;
-            background-color: #eee;
+            background-color: rgba(0,0,0,0.05);
             position: relative;
         }
         .card-img-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s;
+            transition: transform 0.6s;
         }
-        .card:hover .card-img-wrapper img { transform: scale(1.05); }
+        .card:hover .card-img-wrapper img { transform: scale(1.08); }
 
         .type-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
             color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
             z-index: 2;
+            letter-spacing: 1px;
         }
 
-        .card-content { padding: 20px; }
-        .card-title { font-size: 1.1rem; margin-bottom: 8px; color: var(--primary-color); }
-        .card-desc { font-size: 0.9rem; color: #666; line-height: 1.5; }
+        .card-content { padding: 25px; }
+        .card-title { font-size: 1.15rem; margin-bottom: 10px; color: var(--text-color); font-weight: 700; }
+        .card-desc { font-size: 0.95rem; color: #555; line-height: 1.6; }
 
-        /* --- 優化後的 Lightbox (支援 iframe) --- */
+        /* --- Lightbox (毛玻璃質感視窗) --- */
         .lightbox {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 2000;
             left: 0; top: 0;
             width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(40, 44, 52, 0.6); /* 背景變暗但微透 */
+            backdrop-filter: blur(8px); /* 背景極致模糊 */
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox.show { opacity: 1; }
+
+        /* 視窗本體 */
+        .lb-content-wrapper {
+            background: rgba(255, 255, 255, 0.9);
+            width: 90%;
+            max-width: 1100px;
+            height: 85vh;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            animation: zoomIn 0.4s ease;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
         
         /* 圖片模式容器 */
         .lb-img-container {
-            display: none; /* 預設隱藏 */
-            max-width: 90%;
-            max-height: 80vh;
+            flex: 1;
+            display: none;
             position: relative;
-        }
-        .lb-img-container img {
-            max-width: 100%;
-            max-height: 80vh;
-            border-radius: 5px;
-            box-shadow: 0 0 20px rgba(255,255,255,0.1);
-        }
-
-        /* Iframe 模式容器 (給 Canva 用) */
-        .lb-iframe-container {
-            display: none; /* 預設隱藏 */
-            width: 90%;
-            height: 80vh;
-            max-width: 1000px;
-            background: black;
-            border-radius: 8px;
+            background: #000;
             overflow: hidden;
         }
-        .lb-iframe-container iframe {
+        .lb-img-container img {
             width: 100%;
             height: 100%;
-            border: none;
+            object-fit: contain;
         }
 
+        /* Iframe 模式容器 */
+        .lb-iframe-container {
+            flex: 1;
+            display: none;
+            background: #000;
+        }
+        .lb-iframe-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* 底部控制列 */
+        .lb-footer {
+            height: 60px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            border-top: 1px solid #eee;
+        }
+        .lb-caption { font-size: 1rem; color: #333; font-weight: bold; }
+        .lb-counter { font-size: 0.9rem; color: #888; }
+
+        /* 特殊：PDF 閱讀按鈕 (只在型錄出現) */
+        .pdf-action-btn {
+            display: none; /* 預設隱藏 */
+            padding: 8px 20px;
+            background: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,109,174, 0.3);
+        }
+        .pdf-action-btn:hover { background: #005a91; transform: translateY(-2px); }
+
+        /* 按鈕群 */
         .close-btn {
             position: absolute;
-            top: 20px; right: 30px;
-            color: white;
-            font-size: 40px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-        .lb-nav-btn {
-            color: white;
+            top: 15px; right: 20px;
+            color: white; /* 在黑色背景圖上用白色 */
             font-size: 30px;
             cursor: pointer;
-            padding: 20px;
+            z-index: 2002;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            transition: transform 0.2s;
+        }
+        .close-btn:hover { transform: rotate(90deg); color: var(--accent-color); }
+
+        .lb-nav-btn {
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
             user-select: none;
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             z-index: 1001;
+            transition: 0.3s;
         }
-        .lb-prev { left: 10px; }
-        .lb-next { right: 10px; }
-        .lb-caption { color: #ccc; margin-top: 15px; font-size: 1.1rem; }
+        .lb-nav-btn:hover { background: rgba(255, 255, 255, 0.9); color: black; }
+        .lb-prev { left: 20px; }
+        .lb-next { right: 20px; }
+
+        /* 針對 iframe 模式時，關閉按鈕要改顏色，不然會看不見 */
+        .lb-content-wrapper.iframe-mode .close-btn { color: #333; text-shadow: none; top: 10px; right: 15px; background: rgba(255,255,255,0.8); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;}
 
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>My Design Portfolio</h1>
+    <header class="glass-panel">
+        <h1>GoldenWay Design</h1>
         <p>設計作品 | 型錄編排 | 網頁設計 | 專案規劃</p>
     </header>
 
-    <div class="filter-container" id="filterContainer">
+    <div class="filter-container glass-panel" id="filterContainer">
         <button class="filter-btn active" onclick="filterGallery('all')">全部作品</button>
         <button class="filter-btn" onclick="filterGallery('posters')">海報設計</button>
         <button class="filter-btn" onclick="filterGallery('catalogs')">產品型錄</button>
@@ -188,20 +292,30 @@
     <div class="gallery-container" id="galleryContainer"></div>
 
     <div class="lightbox" id="lightbox">
-        <span class="close-btn" onclick="closeLightbox()">&times;</span>
         
-        <div class="lb-nav-btn lb-prev" onclick="changeImage(-1)">&#10094;</div>
-        
-        <div class="lb-img-container" id="lb-img-box">
-            <img id="lightbox-img" src="">
-        </div>
+        <div class="lb-content-wrapper" id="lb-wrapper">
+            <span class="close-btn" onclick="closeLightbox()">&times;</span>
 
-        <div class="lb-iframe-container" id="lb-iframe-box">
-            <iframe id="lightbox-iframe" src="" allowfullscreen allow="fullscreen"></iframe>
-        </div>
+            <div class="lb-img-container" id="lb-img-box">
+                <div class="lb-nav-btn lb-prev" onclick="changeImage(-1)">&#10094;</div>
+                <img id="lightbox-img" src="">
+                <div class="lb-nav-btn lb-next" onclick="changeImage(1)">&#10095;</div>
+            </div>
 
-        <div class="lb-nav-btn lb-next" onclick="changeImage(1)">&#10095;</div>
-        <div class="lb-caption" id="lightbox-caption"></div>
+            <div class="lb-iframe-container" id="lb-iframe-box">
+                <iframe id="lightbox-iframe" src="" allowfullscreen allow="fullscreen"></iframe>
+            </div>
+
+            <div class="lb-footer">
+                <div class="lb-info">
+                    <div class="lb-caption" id="lightbox-caption">標題</div>
+                    <div class="lb-counter" id="lightbox-counter"></div>
+                </div>
+                <a href="#" target="_blank" id="pdf-btn" class="pdf-action-btn">
+                    <i class="fas fa-file-pdf"></i> 瀏覽完整 PDF 文件
+                </a>
+            </div>
+        </div>
     </div>
 
     <script src="data.js"></script>
@@ -210,45 +324,39 @@
         const galleryContainer = document.getElementById('galleryContainer');
         const filterBtns = document.querySelectorAll('.filter-btn');
 
+        // 延遲動畫係數
+        let animationDelay = 0;
+
         window.onload = () => {
             renderGallery(portfolioData);
         };
 
         function renderGallery(items) {
             galleryContainer.innerHTML = '';
+            animationDelay = 0; // 重置延遲
             
-            items.forEach(item => {
+            items.forEach((item, index) => {
                 let coverImage = "";
+                // 相容性處理：無論是 image 或 images 都能抓到第一張封面
                 if (item.images && item.images.length > 0) {
                     coverImage = item.images[0];
                 } else {
                     coverImage = item.image;
                 }
 
-                // 邏輯升級：Canva 也要呼叫 openLightbox，而不是 window.open
-                let clickAction = "";
-                let badgeIcon = "";
-                
-                if (item.type === 'pdf') {
-                    // PDF 還是建議開新分頁比較穩 (手機相容性問題)
-                    clickAction = `window.open('${item.link}', '_blank')`;
-                    badgeIcon = '<i class="fas fa-file-pdf"></i> PDF';
-                } else if (item.type === 'canva') {
-                    // Canva 改成開啟 Lightbox
-                    clickAction = `openLightbox('${item.title}')`;
-                    badgeIcon = '<i class="fas fa-play-circle"></i> Canva';
-                } else if (item.type === 'link') {
-                    clickAction = `window.open('${item.link}', '_blank')`;
-                    badgeIcon = '<i class="fas fa-link"></i> Link';
-                } else {
-                    clickAction = `openLightbox('${item.title}')`;
-                    badgeIcon = '<i class="fas fa-image"></i> Gallery';
-                }
+                // 標籤邏輯
+                let badgeIcon = '<i class="fas fa-image"></i> Gallery';
+                if (item.type === 'pdf') badgeIcon = '<i class="fas fa-book-open"></i> Catalog';
+                if (item.type === 'canva') badgeIcon = '<i class="fas fa-play-circle"></i> Canva';
+                if (item.type === 'link') badgeIcon = '<i class="fas fa-link"></i> Link';
+
+                // 計算延遲時間 (讓卡片一張張浮現)
+                let delayStyle = `animation-delay: ${index * 0.1}s`;
 
                 const cardHTML = `
-                    <div class="card" onclick="${clickAction}">
+                    <div class="card" style="${delayStyle}" onclick="openLightbox('${item.title}')">
                         <div class="card-img-wrapper">
-                            ${item.type ? `<div class="type-badge">${badgeIcon}</div>` : ''}
+                            <div class="type-badge">${badgeIcon}</div>
                             <img src="${coverImage}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
                         </div>
                         <div class="card-content">
@@ -264,6 +372,8 @@
         function filterGallery(category) {
             filterBtns.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
+            
+            // 篩選時重新渲染
             if (category === 'all') {
                 renderGallery(portfolioData);
             } else {
@@ -272,19 +382,22 @@
             }
         }
 
-        /* --- Lightbox 核心邏輯 (支援混合內容) --- */
+        /* --- Lightbox 核心邏輯 --- */
         let currentGroupImages = [];
         let currentImageIndex = 0;
-        let currentMode = 'image'; // 'image' or 'iframe'
+        let currentMode = 'image'; 
 
         const lightbox = document.getElementById('lightbox');
+        const lbWrapper = document.getElementById('lb-wrapper');
         const lbImgBox = document.getElementById('lb-img-box');
         const lbIframeBox = document.getElementById('lb-iframe-box');
-        
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxIframe = document.getElementById('lightbox-iframe');
         
         const lightboxCaption = document.getElementById('lightbox-caption');
+        const lightboxCounter = document.getElementById('lightbox-counter');
+        const pdfBtn = document.getElementById('pdf-btn');
+        
         const prevBtn = document.querySelector('.lb-prev');
         const nextBtn = document.querySelector('.lb-next');
 
@@ -292,56 +405,67 @@
             const item = portfolioData.find(d => d.title === title);
             if (!item) return;
 
+            // 重置狀態
+            lbWrapper.classList.remove('iframe-mode');
+            pdfBtn.style.display = 'none';
+
             // 判斷模式
             if (item.type === 'canva') {
+                // Canva 模式
                 currentMode = 'iframe';
-                // 顯示 iframe 區，隱藏圖片區
+                lbWrapper.classList.add('iframe-mode');
                 lbImgBox.style.display = 'none';
                 lbIframeBox.style.display = 'block';
                 
-                // 設定 iframe 網址
                 lightboxIframe.src = item.link; 
-                
-                // Canva 通常只有一頁(一個連結)，所以隱藏左右按鈕
-                prevBtn.style.display = 'none';
-                nextBtn.style.display = 'none';
                 lightboxCaption.innerText = item.title;
+                lightboxCounter.innerText = "互動式簡報";
 
             } else {
+                // 圖片模式 (適用於：海報、型錄、一般圖片)
                 currentMode = 'image';
-                // 顯示圖片區，隱藏 iframe 區
                 lbImgBox.style.display = 'block';
                 lbIframeBox.style.display = 'none';
-                lightboxIframe.src = ""; // 清空 iframe 避免背景播放聲音
+                lightboxIframe.src = ""; 
 
-                // 載入圖片列表
+                // 準備圖片清單
                 if (item.images && item.images.length > 0) {
                     currentGroupImages = item.images;
                 } else if (item.image) {
                     currentGroupImages = [item.image];
                 }
+                
+                // 重點修正：如果是 PDF 型錄，則顯示「瀏覽完整文件」按鈕
+                if (item.type === 'pdf') {
+                    pdfBtn.style.display = 'inline-block';
+                    pdfBtn.href = item.link; // 設定按鈕連結到 OneDrive
+                }
+
                 currentImageIndex = 0;
                 updateImageContent();
+                lightboxCaption.innerText = item.title;
             }
             
             lightbox.style.display = 'flex';
+            setTimeout(() => { lightbox.classList.add('show'); }, 10); // 淡入效果
         }
 
         function updateImageContent() {
             lightboxImg.src = currentGroupImages[currentImageIndex];
-            lightboxCaption.innerText = `${currentImageIndex + 1} / ${currentGroupImages.length}`;
-
-            if (currentGroupImages.length <= 1) {
+            
+            if (currentGroupImages.length > 1) {
+                lightboxCounter.innerText = `${currentImageIndex + 1} / ${currentGroupImages.length}`;
+                prevBtn.style.display = 'flex';
+                nextBtn.style.display = 'flex';
+            } else {
+                lightboxCounter.innerText = "";
                 prevBtn.style.display = 'none';
                 nextBtn.style.display = 'none';
-            } else {
-                prevBtn.style.display = 'block';
-                nextBtn.style.display = 'block';
             }
         }
 
         function changeImage(n) {
-            if (currentMode !== 'image') return; // Iframe 模式不支援切換
+            if (currentMode !== 'image') return;
             currentImageIndex += n;
             if (currentImageIndex >= currentGroupImages.length) currentImageIndex = 0;
             if (currentImageIndex < 0) currentImageIndex = currentGroupImages.length - 1;
@@ -349,8 +473,11 @@
         }
 
         function closeLightbox() {
-            lightbox.style.display = 'none';
-            lightboxIframe.src = ""; // 關閉時清空 iframe，確保聲音或影片停止
+            lightbox.classList.remove('show');
+            setTimeout(() => { 
+                lightbox.style.display = 'none'; 
+                lightboxIframe.src = ""; 
+            }, 300);
         }
         
         lightbox.addEventListener('click', (e) => {

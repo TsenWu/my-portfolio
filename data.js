@@ -25,7 +25,15 @@ const portfolioData = [
   {
     category: "catalogs",
     title: "金鍏電子 V.13版產品型錄",
-    image: "catalogs/金鍏_V.13_公司產品型錄 (1).png",
+images: [
+        "catalogs/金鍏_V.13_公司產品型錄 (1).png", 
+        "catalogs/金鍏_V.13_公司產品型錄 (2).png", // 假設您有更多內頁圖
+        "catalogs/金鍏_V.13_公司產品型錄 (3).png",
+        "catalogs/金鍏_V.13_公司產品型錄 (4).png",
+        "catalogs/金鍏_V.13_公司產品型錄 (5).png",
+        "catalogs/金鍏_V.13_公司產品型錄 (6).jpg",
+        "catalogs/金鍏_V.13_公司產品型錄 (7).jpg",
+    ],
     link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0Ik8CAAAAAfHX2pXVt08S_ruGi7y56Nk?e=34lcEI",
     type: "pdf"
   },
