@@ -11,12 +11,12 @@
             --glass-border: rgba(255, 255, 255, 0.5);
             --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
             --text-color: #2c3e50;
-            --accent-color: #006dae; /* 金鍏的藍色調 */
+            --accent-color: #006dae;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Microsoft JhengHei", "Helvetica Neue", sans-serif; }
         
-        /* 背景設定：這裡換了一張更有質感的自然背景 */
+        /* 背景設定 */
         body { 
             background: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2800&auto=format&fit=crop') no-repeat center center fixed; 
             background-size: cover;
@@ -28,7 +28,7 @@
         /* --- 毛玻璃面板共用樣式 --- */
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(12px); /* 關鍵：模糊背後 */
+            backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             border-radius: 16px;
@@ -88,19 +88,17 @@
             padding: 0 20px;
         }
 
-        /* --- Card Style (毛玻璃卡片) --- */
+        /* --- Card Style --- */
         .card {
-            background: rgba(255, 255, 255, 0.65); /* 卡片稍微不透明一點，閱讀較清楚 */
+            background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; /* 更有彈性的動畫 */
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
             cursor: pointer;
             position: relative;
-            
-            /* 進場動畫設定 */
             opacity: 0; 
             animation: fadeUp 0.8s ease forwards;
         }
@@ -149,15 +147,15 @@
         .card-title { font-size: 1.15rem; margin-bottom: 10px; color: var(--text-color); font-weight: 700; }
         .card-desc { font-size: 0.95rem; color: #555; line-height: 1.6; }
 
-        /* --- Lightbox (毛玻璃質感視窗) --- */
+        /* --- Lightbox --- */
         .lightbox {
             display: none;
             position: fixed;
             z-index: 2000;
             left: 0; top: 0;
             width: 100%; height: 100%;
-            background-color: rgba(40, 44, 52, 0.6); /* 背景變暗但微透 */
-            backdrop-filter: blur(8px); /* 背景極致模糊 */
+            background-color: rgba(40, 44, 52, 0.6);
+            backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             flex-direction: column;
@@ -166,7 +164,6 @@
         }
         .lightbox.show { opacity: 1; }
 
-        /* 視窗本體 */
         .lb-content-wrapper {
             background: rgba(255, 255, 255, 0.9);
             width: 90%;
@@ -182,7 +179,7 @@
         }
 
         @keyframes zoomIn {
-            from { transform: scale(0.9); opacity: 0; }
+            from { transform: scale(0.95); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
         
@@ -191,13 +188,48 @@
             flex: 1;
             display: none;
             position: relative;
-            background: #000;
+            background: #f8f9fa; /* 背景稍微調亮一點 */
             overflow: hidden;
+            /* 確保圖片居中 */
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
         }
-        .lb-img-container img {
-            width: 100%;
-            height: 100%;
+        
+        /* --- 關鍵：圖片滑動動畫設定 --- */
+        #lightbox-img {
+            max-width: 100%;
+            max-height: 100%;
             object-fit: contain;
+            /* 核心過渡設定：0.5秒平滑移動和透明度變化 */
+            transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 0.5s ease;
+            transform: translateX(0);
+            opacity: 1;
+            backface-visibility: hidden; /* 提升動畫效能 */
+        }
+
+        /* 往左滑出看不見 */
+        .slide-out-left {
+            transform: translateX(-100px) !important;
+            opacity: 0 !important;
+        }
+        /* 往右滑出看不見 */
+        .slide-out-right {
+            transform: translateX(100px) !important;
+            opacity: 0 !important;
+        }
+        
+        /* 準備從右側滑入 (瞬間移動到右側，不帶動畫) */
+        .prep-in-right {
+            transform: translateX(100px) !important;
+            opacity: 0 !important;
+            transition: none !important; 
+        }
+        /* 準備從左側滑入 (瞬間移動到左側，不帶動畫) */
+        .prep-in-left {
+            transform: translateX(-100px) !important;
+            opacity: 0 !important;
+            transition: none !important;
         }
 
         /* Iframe 模式容器 */
@@ -217,13 +249,13 @@
             align-items: center;
             padding: 0 20px;
             border-top: 1px solid #eee;
+            flex-shrink: 0; /* 防止被擠壓 */
         }
         .lb-caption { font-size: 1rem; color: #333; font-weight: bold; }
         .lb-counter { font-size: 0.9rem; color: #888; }
 
-        /* 特殊：PDF 閱讀按鈕 (只在型錄出現) */
         .pdf-action-btn {
-            display: none; /* 預設隱藏 */
+            display: none;
             padding: 8px 20px;
             background: var(--accent-color);
             color: white;
@@ -239,21 +271,24 @@
         .close-btn {
             position: absolute;
             top: 15px; right: 20px;
-            color: white; /* 在黑色背景圖上用白色 */
+            color: #333;
             font-size: 30px;
             cursor: pointer;
             z-index: 2002;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
             transition: transform 0.2s;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%; width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
         }
         .close-btn:hover { transform: rotate(90deg); color: var(--accent-color); }
 
         .lb-nav-btn {
-            color: white;
+            color: #333;
             font-size: 24px;
             cursor: pointer;
             padding: 15px;
-            background: rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             border-radius: 50%;
             width: 50px; height: 50px;
             display: flex; align-items: center; justify-content: center;
@@ -262,14 +297,11 @@
             top: 50%;
             transform: translateY(-50%);
             z-index: 1001;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
-        .lb-nav-btn:hover { background: rgba(255, 255, 255, 0.9); color: black; }
+        .lb-nav-btn:hover { background: var(--accent-color); color: white; transform: translateY(-50%) scale(1.1); }
         .lb-prev { left: 20px; }
         .lb-next { right: 20px; }
-
-        /* 針對 iframe 模式時，關閉按鈕要改顏色，不然會看不見 */
-        .lb-content-wrapper.iframe-mode .close-btn { color: #333; text-shadow: none; top: 10px; right: 15px; background: rgba(255,255,255,0.8); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;}
 
     </style>
 </head>
@@ -298,7 +330,7 @@
 
             <div class="lb-img-container" id="lb-img-box">
                 <div class="lb-nav-btn lb-prev" onclick="changeImage(-1)">&#10094;</div>
-                <img id="lightbox-img" src="">
+                <img id="lightbox-img">
                 <div class="lb-nav-btn lb-next" onclick="changeImage(1)">&#10095;</div>
             </div>
 
@@ -324,33 +356,27 @@
         const galleryContainer = document.getElementById('galleryContainer');
         const filterBtns = document.querySelectorAll('.filter-btn');
 
-        // 延遲動畫係數
-        let animationDelay = 0;
-
         window.onload = () => {
             renderGallery(portfolioData);
         };
 
         function renderGallery(items) {
             galleryContainer.innerHTML = '';
-            animationDelay = 0; // 重置延遲
             
             items.forEach((item, index) => {
                 let coverImage = "";
-                // 相容性處理：無論是 image 或 images 都能抓到第一張封面
                 if (item.images && item.images.length > 0) {
                     coverImage = item.images[0];
                 } else {
                     coverImage = item.image;
                 }
 
-                // 標籤邏輯
                 let badgeIcon = '<i class="fas fa-image"></i> Gallery';
                 if (item.type === 'pdf') badgeIcon = '<i class="fas fa-book-open"></i> Catalog';
                 if (item.type === 'canva') badgeIcon = '<i class="fas fa-play-circle"></i> Canva';
                 if (item.type === 'link') badgeIcon = '<i class="fas fa-link"></i> Link';
 
-                // 計算延遲時間 (讓卡片一張張浮現)
+                // 延遲動畫
                 let delayStyle = `animation-delay: ${index * 0.1}s`;
 
                 const cardHTML = `
@@ -373,7 +399,6 @@
             filterBtns.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             
-            // 篩選時重新渲染
             if (category === 'all') {
                 renderGallery(portfolioData);
             } else {
@@ -382,10 +407,11 @@
             }
         }
 
-        /* --- Lightbox 核心邏輯 --- */
+        /* --- Lightbox 核心邏輯 (含滑動動畫) --- */
         let currentGroupImages = [];
         let currentImageIndex = 0;
         let currentMode = 'image'; 
+        let isAnimating = false; // 防止連續點擊的開關
 
         const lightbox = document.getElementById('lightbox');
         const lbWrapper = document.getElementById('lb-wrapper');
@@ -405,54 +431,60 @@
             const item = portfolioData.find(d => d.title === title);
             if (!item) return;
 
-            // 重置狀態
-            lbWrapper.classList.remove('iframe-mode');
             pdfBtn.style.display = 'none';
+            // 開啟時先重置圖片狀態，避免殘留動畫 class
+            lightboxImg.className = ''; 
 
-            // 判斷模式
             if (item.type === 'canva') {
-                // Canva 模式
                 currentMode = 'iframe';
-                lbWrapper.classList.add('iframe-mode');
-                lbImgBox.style.display = 'none';
+                lbImgBox.style.display = 'none'; // 這裡用 flex 會更好控制居中，但先維持 none
                 lbIframeBox.style.display = 'block';
-                
                 lightboxIframe.src = item.link; 
                 lightboxCaption.innerText = item.title;
                 lightboxCounter.innerText = "互動式簡報";
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
 
             } else {
-                // 圖片模式 (適用於：海報、型錄、一般圖片)
                 currentMode = 'image';
-                lbImgBox.style.display = 'block';
+                lbImgBox.style.display = 'flex'; // 改用 flex 確保居中
                 lbIframeBox.style.display = 'none';
                 lightboxIframe.src = ""; 
 
-                // 準備圖片清單
                 if (item.images && item.images.length > 0) {
                     currentGroupImages = item.images;
                 } else if (item.image) {
                     currentGroupImages = [item.image];
                 }
                 
-                // 重點修正：如果是 PDF 型錄，則顯示「瀏覽完整文件」按鈕
                 if (item.type === 'pdf') {
                     pdfBtn.style.display = 'inline-block';
-                    pdfBtn.href = item.link; // 設定按鈕連結到 OneDrive
+                    pdfBtn.href = item.link;
                 }
 
                 currentImageIndex = 0;
-                updateImageContent();
+                updateImageContent(false); // 第一次開啟不用動畫
                 lightboxCaption.innerText = item.title;
             }
             
             lightbox.style.display = 'flex';
-            setTimeout(() => { lightbox.classList.add('show'); }, 10); // 淡入效果
+            setTimeout(() => { lightbox.classList.add('show'); }, 10);
         }
 
-        function updateImageContent() {
-            lightboxImg.src = currentGroupImages[currentImageIndex];
+        // 更新圖片內容 (參數 animate 決定是否要執行滑入動畫)
+        function updateImageContent(animate = true) {
+            // 設定新圖片來源
+            const newSrc = currentGroupImages[currentImageIndex];
             
+            if (animate) {
+                // 如果需要動畫 (切換時)，先換 src，然後瀏覽器會自動執行從 prep-in 到正常狀態的滑入動畫
+                lightboxImg.src = newSrc;
+            } else {
+                // 如果不需要動畫 (剛打開時)，直接設定 src
+                lightboxImg.src = newSrc;
+            }
+            
+            // 更新計數器和按鈕狀態
             if (currentGroupImages.length > 1) {
                 lightboxCounter.innerText = `${currentImageIndex + 1} / ${currentGroupImages.length}`;
                 prevBtn.style.display = 'flex';
@@ -464,12 +496,46 @@
             }
         }
 
+        // --- 核心滑動動畫邏輯 ---
         function changeImage(n) {
-            if (currentMode !== 'image') return;
-            currentImageIndex += n;
-            if (currentImageIndex >= currentGroupImages.length) currentImageIndex = 0;
-            if (currentImageIndex < 0) currentImageIndex = currentGroupImages.length - 1;
-            updateImageContent();
+            // 如果不是圖片模式，或正在動畫中，則不執行
+            if (currentMode !== 'image' || isAnimating) return;
+            isAnimating = true; // 鎖定開關
+
+            // 1. 決定滑出方向 (n>0 是下一張，往左滑出; n<0 是上一張，往右滑出)
+            let outClass = n > 0 ? 'slide-out-left' : 'slide-out-right';
+            // 決定滑入前的準備位置 (下一張要從右邊進來; 上一張要從左邊進來)
+            let prepClass = n > 0 ? 'prep-in-right' : 'prep-in-left';
+
+            // 2. 執行滑出動畫
+            lightboxImg.classList.add(outClass);
+
+            // 3. 等待滑出動畫結束 (500ms 與 CSS transition 時間匹配)
+            setTimeout(() => {
+                // 計算新索引
+                currentImageIndex += n;
+                if (currentImageIndex >= currentGroupImages.length) currentImageIndex = 0;
+                if (currentImageIndex < 0) currentImageIndex = currentGroupImages.length - 1;
+
+                // 4. 瞬間移動圖片到準備位置 (因為 prepClass 有 transition: none，所以是瞬間)
+                lightboxImg.classList.remove(outClass);
+                lightboxImg.classList.add(prepClass);
+                
+                // 5. 更換圖片來源 (此時圖片在畫面外，看不見)
+                updateImageContent(true);
+
+                // 6. 強制瀏覽器重繪 (Reflow) - 關鍵步驟，讓瀏覽器知道圖片位置變了
+                void lightboxImg.offsetWidth;
+
+                // 7. 移除準備狀態 class，讓圖片滑回中間 (觸發 CSS transition)
+                lightboxImg.classList.remove(prepClass);
+
+                // 8. 等待滑入動畫結束後，解鎖開關
+                setTimeout(() => {
+                    isAnimating = false;
+                }, 500); // 這裡的時間也要匹配 CSS
+
+            }, 500); // 這裡的時間要匹配 CSS
         }
 
         function closeLightbox() {
@@ -477,6 +543,9 @@
             setTimeout(() => { 
                 lightbox.style.display = 'none'; 
                 lightboxIframe.src = ""; 
+                // 關閉時清空圖片 src 和 class，避免下次打開閃爍
+                lightboxImg.src = "";
+                lightboxImg.className = "";
             }, 300);
         }
         
