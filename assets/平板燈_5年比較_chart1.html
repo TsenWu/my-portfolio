@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>照明總成本長條圖</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans TC', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary-green': '#10b981',
+                        'secondary-blue': '#3b82f6',
+                        'light-red': '#f87171', 
+                        'light-yellow': '#fbbf24', 
+                        'cost-initial': '#6B8F71',  
+                        'cost-electricity': '#EDAE49',
+                        'cost-repair': '#D1495B',   
+                        'goldwell-border-yellow': '#FACC15', // Tailwind 的 yellow-400
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            padding: 0; 
+            margin: 0; 
+            overflow-x: hidden;
+            font-family: 'Inter', 'Noto Sans TC', 'sans-serif';
+            background-color: transparent; 
+            
+            /* 修正 Y 軸被裁剪：確保 body 填滿 iframe 的高度 */
+            height: 100%; 
+        }
+
+        /* 修正 Y 軸被裁剪：確保圖表根容器填滿 iframe 的寬高 */
+        #chart-widget {
+            height: 100%;
+            width: 100%;
+        }
+
+        .bar-container {
+            display: flex;
+            align-items: flex-end;
+            height: 300px;
+            /* 預留左側空間給 Y 軸標籤 */
+            margin-left: 3rem; 
+        }
+
+        .bar {
+            transition: height 0.8s ease-out;
+            cursor: pointer;
+        }
+
+        /* Y 軸標籤定位樣式 */
+        .y-axis-labels {
+            position: absolute;
+            top: 0;
+            left: 0; 
+            height: 100%;
+            margin-left: 0.5rem; 
+            color: #6b7280; 
+            z-index: 10; 
+            pointer-events: none;
+        }
+        .y-axis-labels > div {
+            position: absolute;
+            right: 100%; 
+            padding-right: 0.5rem; 
+            white-space: nowrap;
+            font-size: 0.875rem;
+            transform: translateY(-50%); 
+        }
+        /* 根據 maxCost=6350 調整 Y 軸百分比定位 */
+        .y-axis-labels > div:first-child { top: 0; } 
+        .y-axis-labels > div:nth-child(2) { top: calc(100% * (1 - 4333/6350)); }
+        .y-axis-labels > div:last-child { bottom: 0; } 
+
+        /* 新增樣式：確保 X 軸標籤容器能容納兩行文字 */
+        .x-label-item {
+            display: flex;
+            flex-direction: column; /* 垂直排列 */
+            align-items: center; /* 居中對齊 */
+        }
+
+    </style>
+</head>
+<body>
+    <div id="chart-widget" class="relative p-0 m-0 w-full h-full">
+        
+        <h2 class="text-xl font-bold mb-4 text-gray-700 ml-12">５年總持有成本長條圖 (NT$)</h2>
+        
+        <div class="bar-container relative border-b border-l border-gray-300">
+            
+            <div class="y-axis-labels">
+                <div>6,500</div>
+                <div>4,333</div>
+                <div>0</div>
+            </div>
+
+            <div id="chart-bars" class="flex flex-1 items-end h-full">
+                </div>
+        </div>
+
+        <div id="chart-labels" class="flex pt-2 text-center text-xs sm:text-sm font-semibold ml-12">
+            </div>
+
+    </div>
+
+    <script>
+        // 產品數據 - 新增 wattage 屬性
+        const productData = [
+            // 名稱修正為: 金鍏LED平板燈 (21W)
+            { name: "金鍏LED平板燈", wattage: 21, color: 'bg-primary-green', initial: 1400, electricity: 1575, repair: 0, hoverColor: 'hover:bg-green-700' },
+            // 名稱修正為: 市售LED平板燈 (40W)
+            { name: "市售LED平板燈", wattage: 40, color: 'bg-secondary-blue', initial: 500, electricity: 3000, repair: 750, hoverColor: 'hover:bg-blue-700' },
+            // 名稱修正為: 格柵燈(LED T8燈管*4) (43W)
+            { name: "格柵燈(LED T8燈管*4)", wattage: 43, color: 'bg-light-yellow', initial: 750, electricity: 3225, repair: 800, hoverColor: 'hover:bg-yellow-600' }, 
+            // 名稱修正為: 格柵燈(T5螢光燈管*4) (64W)
+            { name: "格柵燈(T5螢光燈管*4)", wattage: 64, color: 'bg-light-red', initial: 750, electricity: 4800, repair: 800, hoverColor: 'hover:bg-red-700' }, 
+        ];
+
+        const chartBars = document.getElementById('chart-bars');
+        const chartLabels = document.getElementById('chart-labels');
+        const maxCost = 6350; 
+
+        function renderChart() {
+            if (!chartBars || !chartLabels) return; 
+
+            chartBars.innerHTML = '';
+            chartLabels.innerHTML = '';
+
+            productData.forEach((data, index) => { 
+                const totalCost = data.initial + data.electricity + data.repair;
+                const heightPercentage = (totalCost / maxCost) * 100;
+                
+                const barDiv = document.createElement('div');
+                // 金鍏LED平板燈邊框顏色改為黃色
+                const borderColorClass = index === 0 ? 'border-2 border-goldwell-border-yellow/70 ring-2 ring-goldwell-border-yellow/50' : '';
+                
+                barDiv.className = `bar w-1/4 h-0 mx-1 md:mx-2 flex flex-col justify-end items-center rounded-t-lg ${data.color} relative group shadow-lg ${borderColorClass}`;
+                barDiv.style.height = `${heightPercentage}%`;
+                barDiv.style.minHeight = '10px'; 
+                
+                // --- 頂部的 "省!" 圖示 ---
+                if (index === 0) {
+                    const profitIconDiv = document.createElement('div');
+                    profitIconDiv.className = 'absolute right-1/2 translate-x-1/2 w-12 h-12 rounded-full bg-cost-repair flex items-center justify-center shadow-2xl z-30 transform hover:scale-110 transition-transform duration-300 border-4 border-white top-[-70px]';
+                    profitIconDiv.innerHTML = '<span class="text-2xl font-black text-white">省!</span>';
+                    barDiv.appendChild(profitIconDiv);
+                }
+                
+                const totalCostLabel = document.createElement('div');
+                totalCostLabel.className = 'absolute top-0 transform -translate-y-full mt-1 font-bold text-xs sm:text-sm text-gray-800 bg-white px-1 py-0.5 rounded shadow-md z-20 whitespace-nowrap';
+                totalCostLabel.innerHTML = `NT$ ${totalCost.toLocaleString()}`;
+                barDiv.appendChild(totalCostLabel);
+
+                const costs = [
+                    { value: data.repair, label: '5年換修', color: 'bg-cost-repair' }, 
+                    { value: data.electricity, label: '5年電費', color: 'bg-cost-electricity' },
+                    { value: data.initial, label: '初始成本', color: 'bg-cost-initial' }
+                ];
+
+                costs.forEach(cost => {
+                    if (cost.value > 0) {
+                        const segmentHeight = (cost.value / totalCost) * 100;
+                        const segmentDiv = document.createElement('div');
+                        segmentDiv.className = `${cost.color} w-full transition-all duration-700 ease-out relative group/segment`;
+                        segmentDiv.style.height = `${segmentHeight}%`;
+                        
+                        const segmentTooltip = document.createElement('div');
+                        segmentTooltip.className = 'absolute inset-0 flex items-center justify-center text-[10px] sm:text-xs text-white font-semibold rounded opacity-0 group-hover/segment:opacity-100 transition-opacity whitespace-nowrap z-30 bg-black/60 backdrop-blur-[1px]';
+                        segmentTooltip.innerHTML = `${cost.label}: ${cost.value.toLocaleString()} 元`;
+                        
+                        segmentDiv.appendChild(segmentTooltip);
+                        barDiv.appendChild(segmentDiv); 
+                    }
+                });
+                
+                chartBars.appendChild(barDiv);
+
+                // --- X 軸標籤與瓦數顯示邏輯 ---
+                const labelContainer = document.createElement('div');
+                labelContainer.className = 'w-1/4 px-1 md:px-2 x-label-item'; // 使用 flex-direction: column 樣式
+
+                // 1. 產品名稱 (第一行)
+                const nameDiv = document.createElement('div');
+                let nameClasses = 'text-center';
+                if (index === 0) {
+                    nameClasses += ' font-extrabold text-primary-green'; // 突出金鍏名稱
+                }
+                nameDiv.className = nameClasses;
+                nameDiv.textContent = data.name; 
+                nameDiv.title = data.name; // 完整名稱作為提示
+
+                // 2. 瓦數 (第二行)
+                const wattageDiv = document.createElement('div');
+                // 讓瓦數文字更小且顏色稍淺
+                wattageDiv.className = 'text-center text-xs text-gray-500 font-medium mt-0.5'; 
+                wattageDiv.textContent = `${data.wattage}W`;
+                
+                // 組合
+                labelContainer.appendChild(nameDiv);
+                labelContainer.appendChild(wattageDiv);
+                
+                chartLabels.appendChild(labelContainer);
+            });
+        }
+
+        // 初始化：確保在所有 DOM 載入後執行
+        document.addEventListener('DOMContentLoaded', renderChart);
+        if (document.readyState === 'complete') {
+            renderChart();
+        }
+    </script>
+</body>
+</html>

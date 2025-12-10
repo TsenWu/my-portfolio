@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>節能數據動畫浮層</title>
+  <style>
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ✅ 外層容器：限制最大寬度 */
+    .wrapper {
+      max-width: 1280px;         /* ✅ 寬度限制：避免橫向超出（可調整） */
+      width: 100%;
+    }
+
+    .container {
+          display: flex;
+          justify-content: center;
+          gap: 16px;
+          flex-wrap: nowrap;        /* 🔥 關鍵設定：禁止卡片自動換行 */
+          overflow: hidden;         /* 🔥 不讓它產生橫向捲軸 */
+          max-width: 100%;          /* 確保不超過父層容器 */
+          box-sizing: border-box;
+    }
+
+    /* ✅ 響應式：手機版上下堆疊 */
+    @media (max-width: 820px) {  /* ✅ 當螢幕小於此寬度，進入堆疊模式 */
+      .container {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 16px;
+      }
+
+      .card {
+        width: 100% !important;
+        max-width: 360px;
+      }
+    }
+
+    /* ====== 卡片共用樣式 ====== */
+    .card {
+      width: 230px;
+      padding: 20px 20px;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .label {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .label span {
+      font-weight: bold;
+    }
+
+    .number {
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    .unit {
+      font-size: 28px;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+
+    .desc {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    .desc b {
+      font-size: 22px;
+      color: #b12220;
+      font-weight: bold;
+    }
+
+    .desc .red {
+      font-size: 18px;
+      color: #b12220;
+      font-weight: bold;
+      margin-left: 4px;
+    }
+
+    /* ====== 色彩定義 ====== */
+    .electric-color { color: #283f7c; }
+    .oil-color     { color: #d28445; }
+    .co2-color     { color: #2a9d8f; }
+
+    /* ====== 各卡片主題色 + hover ====== */
+    .hover-electric {
+      border-color: #283f7c;
+      background-color: rgba(136,190,251,0.06);
+    }
+    .hover-electric:hover {
+      background-color: rgba(136,190,251,0.30);
+      transform: translateY(-4px);
+    }
+
+    .hover-oil {
+      border-color: #d28445;
+      background-color: rgba(210,132,69,0.06);
+    }
+    .hover-oil:hover {
+      background-color: rgba(210,132,69,0.15);
+      transform: translateY(-4px);
+    }
+
+    .hover-co2 {
+      border-color: #2a9d8f;
+      background-color: rgba(42,157,143,0.06);
+    }
+    .hover-co2:hover {
+      background-color: rgba(42,157,143,0.20);
+      transform: translateY(-4px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="container">
+      <!-- 電量卡 -->
+      <div class="card hover-electric">
+        <div class="label">
+          七年節約 <span class="electric-color">耗電量</span>（總計）
+        </div>
+        <div>
+          <span class="number electric-color" id="electric-count">0</span>
+          <span class="unit electric-color">度</span>
+        </div>
+        <div class="desc">
+          省下高達 <b>1,164 萬</b><span class="red">電費</span>
+        </div>
+      </div>
+
+      <!-- 油當量卡 -->
+      <div class="card hover-oil">
+        <div class="label">
+          七年節約 <span class="oil-color">油當量</span>（總計）
+        </div>
+        <div>
+          <span class="number oil-color" id="oil-count">0</span>
+          <span class="unit oil-color">Kloe</span>
+        </div>
+        <div class="desc">
+          約當於 292,620 公升 汽油當量
+        </div>
+      </div>
+
+      <!-- 碳排卡 -->
+      <div class="card hover-co2">
+        <div class="label">
+          七年節約 <span class="co2-color">碳排放</span>（總計）
+        </div>
+        <div>
+          <span class="number co2-color" id="co2-count">0</span>
+          <span class="unit co2-color">噸</span>
+        </div>
+        <div class="desc">
+          相當於數萬棵樹的 年吸收量
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ 數字滾動動畫 -->
+  <script>
+    function animateCount(id, end, duration) {
+      const el = document.getElementById(id);
+      const isFloat = end % 1 !== 0;
+      const decimals = isFloat ? 2 : 0;
+      const formatter = new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+
+      const startTime = performance.now();
+
+      function easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeOutCubic(progress);
+        const currentValue = end * eased;
+
+        el.textContent = formatter.format(currentValue);
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      animateCount("electric-count", 3061984, 2500);
+      animateCount("oil-count", 292.62, 2500);
+      animateCount("co2-count", 1560.06, 2500);
+    });
+  </script>
+</body>
+</html>
+
+
+
