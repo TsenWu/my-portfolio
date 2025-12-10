@@ -35,7 +35,7 @@ const portfolioData = [
     category: "presentations",
     title: "碳費徵收相關機制簡報 (Canva)",
     image: "presentations/(延伸)碳費徵收相關機制簡報.jpg",
-    link: "https://www.canva.com/design/DAGVf0SdmTs/nIGzL34ekdDe7TorcfpU9A/watch",
+    link: "https://www.canva.com/design/DAGVf0SdmTs/nIGzL34ekdDe7TorcfpU9A/view",
     type: "canva"
   },
   {
