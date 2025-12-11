@@ -7,357 +7,339 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            /* 調整為更清透、更有質感的玻璃參數 */
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-sidebar: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            /* 視覺風格參數 */
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-sidebar: rgba(245, 247, 250, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
             
             --primary-color: #2c3e50;
             --accent-color: #006dae;
             --text-secondary: #5a6a7e;
-            --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            --highlight: #e3f2fd;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Microsoft JhengHei", "Helvetica Neue", sans-serif; }
 
+        /* --- 1. 全局背景與佈局鎖定 (解決抖動的關鍵) --- */
         body {
             /* 背景圖 */
             background: url('https://images.unsplash.com/photo-1464618663641-bbdd760ae84a?q=80&w=1740&auto=format&fit=crop') no-repeat center center fixed;
             background-size: cover;
+            
+            /* 關鍵：鎖定 Body 不捲動，防止整體頁面跳動 */
             height: 100vh;
-            overflow: hidden; /* 防止整個 Body 捲動，只讓內容區捲動 */
+            width: 100vw;
+            overflow: hidden; 
+            
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-color);
         }
 
-        /* --- 主應用程式容器 (像一個浮動的視窗) --- */
+        /* --- 2. 主應用程式框架 (Monitor Frame) --- */
         .app-container {
             width: 95vw;
-            height: 92vh;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            height: 92vh; /* 固定高度，像個螢幕 */
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px); 
             border: 1px solid var(--glass-border);
-            border-radius: 24px;
+            border-radius: 20px;
             box-shadow: var(--glass-shadow);
             display: flex;
-            overflow: hidden;
+            overflow: hidden; /* 確保內容不會溢出圓角 */
             position: relative;
         }
 
-        /* --- 左側邊欄 (Sidebar) --- */
+        /* --- 3. 左側固定側邊欄 (Sidebar) --- */
         .sidebar {
-            width: 280px;
+            width: 260px;
             background: var(--glass-sidebar);
-            border-right: 1px solid rgba(255,255,255,0.5);
-            padding: 40px 25px;
+            border-right: 1px solid #e0e0e0;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
-            flex-shrink: 0;
+            flex-shrink: 0; /* 禁止縮放 */
             z-index: 10;
         }
 
-        .brand {
-            margin-bottom: 50px;
-        }
-        .brand h1 { font-size: 1.8rem; letter-spacing: 1px; color: var(--accent-color); margin-bottom: 8px; }
-        .brand p { font-size: 0.9rem; color: var(--text-secondary); font-weight: 300; }
+        .brand { margin-bottom: 40px; padding-left: 10px; }
+        .brand h1 { font-size: 1.6rem; letter-spacing: 1px; color: var(--accent-color); margin-bottom: 5px; }
+        .brand p { font-size: 0.85rem; color: var(--text-secondary); }
 
         .nav-menu {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            flex: 1; /* 推擠 footer 到底部 */
+            gap: 8px;
+            flex: 1;
+            overflow-y: auto;
         }
 
         .nav-btn {
             display: flex;
             align-items: center;
-            padding: 12px 20px;
-            border-radius: 12px;
+            padding: 12px 15px;
+            border-radius: 10px;
             border: none;
             background: transparent;
             color: var(--text-secondary);
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             text-align: left;
+            font-weight: 500;
         }
 
-        .nav-btn i { width: 30px; font-size: 1.1rem; }
+        .nav-btn i { width: 30px; font-size: 1rem; text-align: center; }
         
         .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(0, 0, 0, 0.03);
             color: var(--accent-color);
-            transform: translateX(5px);
+            transform: translateX(4px);
         }
 
         .nav-btn.active {
             background: var(--accent-color);
             color: white;
-            box-shadow: 0 4px 15px rgba(0, 109, 174, 0.3);
+            box-shadow: 0 4px 10px rgba(0, 109, 174, 0.25);
         }
 
-        .sidebar-footer {
-            margin-top: auto;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            text-align: center;
-            opacity: 0.7;
-        }
-
-        /* --- 右側內容區 (Main Content) --- */
+        /* --- 4. 右側內容視窗 (Main Viewport) --- */
         .main-content {
             flex: 1;
             position: relative;
-            overflow: hidden; /* 內部滾動 */
-            background: rgba(255,255,255,0.1);
+            background: #ffffff; /* 使用純白背景讓作品更突顯 */
+            display: flex;
+            flex-direction: column;
         }
 
-        /* 內容區內的捲動容器 */
-        .scroll-container {
-            height: 100%;
-            overflow-y: auto;
-            padding: 40px;
+        /* 關鍵修正：內容捲動區 */
+        .scroll-viewport {
+            flex: 1;
+            /* 強制顯示垂直捲軸，這是解決畫面切換時「左右抖動」的關鍵 */
+            overflow-y: scroll; 
             scroll-behavior: smooth;
+            padding: 40px;
+            position: relative;
+            /* 現代瀏覽器屬性，保留捲軸空間，防止內容變動時版面跳動 */
+            scrollbar-gutter: stable;
         }
 
-        /* 自定義捲軸樣式 */
-        .scroll-container::-webkit-scrollbar { width: 8px; }
-        .scroll-container::-webkit-scrollbar-track { background: transparent; }
-        .scroll-container::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
-        .scroll-container::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+        /* 美化捲軸 */
+        .scroll-viewport::-webkit-scrollbar { width: 8px; }
+        .scroll-viewport::-webkit-scrollbar-track { background: #f1f1f1; }
+        .scroll-viewport::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        .scroll-viewport::-webkit-scrollbar-thumb:hover { background: #bbb; }
 
-        /* --- 歡迎/標題區塊 --- */
+        /* --- 標題區 --- */
         .section-header {
-            margin-bottom: 30px;
-            animation: fadeInDown 0.8s ease;
+            margin-bottom: 35px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            animation: fadeIn 0.5s ease;
         }
-        .section-header h2 { font-size: 2rem; margin-bottom: 10px; color: var(--primary-color); }
-        .section-header p { color: var(--text-secondary); }
+        .section-header h2 { font-size: 1.8rem; color: var(--primary-color); margin-bottom: 8px; }
+        .section-header p { color: var(--text-secondary); font-size: 0.95rem; }
 
         /* --- 格狀作品列表 (Gallery Grid) --- */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            padding-bottom: 50px;
-            /* 預設顯示 */
-            opacity: 1;
-            transform: translateY(0);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 30px;
+            padding-bottom: 60px;
+            animation: fadeIn 0.6s ease;
         }
 
-        .gallery-grid.hidden {
-            display: none; 
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        /* 卡片樣式 */
+        /* 卡片設計 */
         .card {
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 16px;
+            background: #fff;
+            border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            border-color: var(--highlight);
+        }
+
+        .card-img-wrapper {
+            width: 100%;
+            height: 180px;
+            background: #f8f9fa;
+            position: relative;
+            overflow: hidden;
         }
 
         .card-img {
-            height: 200px;
             width: 100%;
+            height: 100%;
             object-fit: cover;
-            border-bottom: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.5s;
+        }
+        
+        .card:hover .card-img { transform: scale(1.05); }
+
+        .card-badge {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 4px;
+            z-index: 2;
         }
 
-        .card-info { padding: 20px; }
-        .card-title { font-size: 1.1rem; font-weight: bold; margin-bottom: 5px; color: var(--primary-color); }
-        .card-type { font-size: 0.8rem; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .card-info { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+        .card-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--primary-color); line-height: 1.4; }
+        .card-desc { font-size: 0.85rem; color: #888; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: auto;}
 
-        /* --- 詳情頁面 (Detail View - 取代 Lightbox) --- */
+        /* --- 5. 瀑布流詳情頁 (Waterfall Detail View) --- */
         .detail-view {
-            display: none; /* 預設隱藏 */
+            display: none;
             flex-direction: column;
-            animation: slideInRight 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            animation: slideIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             max-width: 900px;
             margin: 0 auto;
-            padding-bottom: 60px;
+            width: 100%;
+            padding-bottom: 50px;
         }
 
-        .detail-view.active {
-            display: flex;
-        }
+        .detail-view.active { display: flex; }
 
-        /* 詳情頁頂部導航 */
-        .detail-nav {
+        /* 詳情導航列 */
+        .detail-nav-bar {
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(5px);
+            padding: 15px 0;
+            margin-bottom: 20px;
+            z-index: 50;
+            border-bottom: 1px solid #eee;
             display: flex;
             align-items: center;
-            margin-bottom: 30px;
-            position: sticky;
-            top: -40px; /* 讓它黏在上方一點點 */
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            border-radius: 12px;
-            z-index: 20;
-            margin-top: -20px; /* 抵消 padding */
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            justify-content: space-between;
         }
 
         .back-btn {
-            background: none;
             border: none;
-            font-size: 1rem;
-            color: var(--text-secondary);
+            background: #f0f2f5;
+            color: var(--primary-color);
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
-            border-radius: 20px;
             transition: 0.2s;
         }
-        .back-btn:hover { background: #eee; color: var(--primary-color); }
+        .back-btn:hover { background: #e0e0e0; }
 
-        .detail-header-info { margin-left: 20px; border-left: 2px solid #ddd; padding-left: 20px; }
-        .detail-title { font-size: 1.4rem; font-weight: bold; color: var(--primary-color); }
-        .detail-meta { font-size: 0.9rem; color: var(--text-secondary); }
+        .detail-header { margin-bottom: 30px; }
+        .detail-title { font-size: 1.5rem; font-weight: 800; color: var(--primary-color); margin-bottom: 5px; }
+        .detail-meta { color: var(--text-secondary); font-size: 0.9rem; }
 
-        /* 詳情內容區塊 */
-        .detail-content {
-            background: rgba(255,255,255,0.5);
-            border-radius: 20px;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.4);
-        }
-
-        .detail-desc {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: #444;
-            margin-bottom: 40px;
-            max-width: 800px;
-        }
-
-        /* 垂直排列的圖片展示 */
-        .detail-images-stack {
+        /* A. 瀑布流圖片容器 */
+        .waterfall-container {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px; /* 圖片間距 */
             width: 100%;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #eee;
         }
 
-        .detail-img-item {
+        .waterfall-img {
             width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
-            background: #fff;
-        }
-        
-        /* iframe 容器 (for Canva) */
-        .iframe-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 ratio */
-            height: 0;
-            overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            background: #000;
-        }
-        .iframe-container iframe {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            border: 0;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
 
-        /* 外部連結按鈕 */
-        .action-btn {
-            display: inline-block;
+        /* B. 嵌入容器 (PDF/Canva) */
+        .embed-container {
+            width: 100%;
+            height: 85vh; /* 給予足夠高度閱讀 */
+            border: 1px solid #ddd;
+            border-radius: 8px;
             margin-top: 20px;
-            padding: 10px 25px;
+            background: #f9f9f9;
+        }
+
+        /* C. 外部連結動作區 */
+        .action-area {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f0f7ff;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px dashed var(--accent-color);
+        }
+
+        .pdf-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: var(--accent-color);
             color: white;
-            text-decoration: none;
+            padding: 12px 24px;
             border-radius: 30px;
+            text-decoration: none;
             font-weight: bold;
             transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(0, 109, 174, 0.4);
+            box-shadow: 0 4px 10px rgba(0,109,174,0.2);
         }
-        .action-btn:hover { background: #005a91; transform: translateY(-2px); }
+        .pdf-btn:hover { background: #005a91; box-shadow: 0 6px 15px rgba(0,90,145,0.3); transform: translateY(-2px); }
 
-        /* --- 動畫定義 --- */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* --- 動畫 --- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 響應式：手機版變回上下堆疊 */
+        /* --- RWD 手機版調整 --- */
         @media (max-width: 768px) {
             .app-container {
-                flex-direction: column;
-                width: 100vw;
-                height: 100vh;
-                border-radius: 0;
+                width: 100vw; height: 100vh;
+                border-radius: 0; flex-direction: column;
             }
             .sidebar {
-                width: 100%;
-                height: auto;
-                padding: 20px;
-                border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,0.5);
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
+                width: 100%; height: auto;
+                padding: 15px;
+                flex-direction: row; align-items: center; justify-content: space-between;
+                border-right: none; border-bottom: 1px solid #ddd;
             }
-            .brand { margin-bottom: 0; }
             .brand h1 { font-size: 1.2rem; margin: 0; }
             .brand p { display: none; }
-            
-            /* 手機版導航改為橫向滑動 */
-            .nav-menu {
-                flex-direction: row;
-                overflow-x: auto;
-                position: absolute;
-                bottom: 0; left: 0; width: 100%;
-                background: rgba(255,255,255,0.9);
-                padding: 10px;
-                gap: 10px;
+            .nav-menu { 
+                position: fixed; bottom: 0; left: 0; right: 0;
+                background: white; border-top: 1px solid #eee;
+                flex-direction: row; padding: 10px; overflow-x: auto;
+                z-index: 100;
             }
-            .sidebar-footer { display: none; }
-            
-            .main-content { margin-bottom: 60px; /* 留給導航的空間 */ }
-            .scroll-container { padding: 20px; }
-            .nav-btn { font-size: 0.9rem; padding: 8px 12px; white-space: nowrap; }
+            .nav-btn span { display: none; } /* 手機只顯示 Icon */
+            .nav-btn { padding: 10px; justify-content: center; flex: 1; }
+            .main-content { margin-bottom: 60px; /* 避開底部導航 */ }
+            .scroll-viewport { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        <!-- 左側邊欄：導航與品牌 -->
+        <!-- 左側邊欄 -->
         <aside class="sidebar">
             <div class="brand">
                 <h1>GoldenWay</h1>
@@ -366,183 +348,119 @@
 
             <nav class="nav-menu">
                 <button class="nav-btn active" onclick="filterGallery('all', this)">
-                    <i class="fas fa-th-large"></i> 全部作品
+                    <i class="fas fa-th-large"></i> <span>全部作品</span>
                 </button>
                 <button class="nav-btn" onclick="filterGallery('posters', this)">
-                    <i class="fas fa-palette"></i> 海報設計
+                    <i class="fas fa-palette"></i> <span>海報設計</span>
                 </button>
                 <button class="nav-btn" onclick="filterGallery('catalogs', this)">
-                    <i class="fas fa-book-open"></i> 產品型錄
+                    <i class="fas fa-book-open"></i> <span>產品型錄</span>
                 </button>
                 <button class="nav-btn" onclick="filterGallery('presentations', this)">
-                    <i class="fas fa-laptop"></i> 簡報專案
+                    <i class="fas fa-laptop"></i> <span>簡報專案</span>
                 </button>
                 <button class="nav-btn" onclick="filterGallery('merchandise', this)">
-                    <i class="fas fa-tshirt"></i> 周邊設計
+                    <i class="fas fa-tshirt"></i> <span>周邊設計</span>
                 </button>
                 <button class="nav-btn" onclick="filterGallery('web-design', this)">
-                    <i class="fas fa-code"></i> 網頁設計
+                    <i class="fas fa-code"></i> <span>網頁設計</span>
                 </button>
             </nav>
-
-            <div class="sidebar-footer">
-                &copy; 2024 GoldenWay Design
-            </div>
         </aside>
 
-        <!-- 右側主要內容區 -->
+        <!-- 主內容視窗 -->
         <main class="main-content">
-            <div class="scroll-container" id="scrollContainer">
+            <div class="scroll-viewport" id="scrollContainer">
                 
-                <!-- 列表視圖 -->
+                <!-- 視圖 1: 格狀作品列表 (Gallery Grid) -->
                 <div id="listView">
                     <div class="section-header">
                         <h2 id="pageTitle">全部作品</h2>
                         <p>探索我們最新的設計專案與創意發想。</p>
                     </div>
                     <div class="gallery-grid" id="galleryContainer">
-                        <!-- JS 動態生成卡片 -->
+                        <!-- JS 動態生成 -->
                     </div>
                 </div>
 
-                <!-- 詳情視圖 (取代 Lightbox) -->
+                <!-- 視圖 2: 瀑布流詳情頁 (Detail View) -->
                 <div id="detailView" class="detail-view">
-                    <div class="detail-nav">
+                    <div class="detail-nav-bar">
                         <button class="back-btn" onclick="closeDetail()">
                             <i class="fas fa-arrow-left"></i> 返回列表
                         </button>
-                        <div class="detail-header-info">
-                            <div class="detail-title" id="detailTitle">專案標題</div>
-                            <div class="detail-meta" id="detailCategory">類別</div>
-                        </div>
+                        <div class="detail-meta" id="detailCategoryBadge">分類</div>
                     </div>
 
-                    <div class="detail-content">
-                        <p class="detail-desc" id="detailDesc">專案描述...</p>
-                        
-                        <!-- 圖片垂直堆疊區域 -->
-                        <div class="detail-images-stack" id="detailStack">
-                            <!-- JS 注入圖片 -->
-                        </div>
-
-                        <!-- 額外按鈕 (PDF/Link) -->
-                        <div id="detailActions"></div>
+                    <div class="detail-header">
+                        <div class="detail-title" id="detailTitle">標題</div>
+                        <p id="detailDesc" style="color:#666; line-height:1.6;">描述</p>
                     </div>
+
+                    <!-- A. 瀑布流圖片展示區 -->
+                    <div id="waterfallArea" class="waterfall-container"></div>
+
+                    <!-- B. 嵌入區 (Canva/PDF) -->
+                    <div id="embedArea"></div>
+
+                    <!-- C. 外部連結區 (PDF Fallback) -->
+                    <div id="actionArea" class="action-area" style="display:none;"></div>
                 </div>
 
             </div>
         </main>
     </div>
 
-    <!-- 模擬數據 (與您的原始結構相容) -->
-    <script>
-        const portfolioData = [
-            {
-                id: 1,
-                title: "宣傳海報設計 1 (多圖展示)",
-                category: "posters",
-                type: "gallery",
-                description: "宣傳光板燈之主視覺海報。設計重點在於強調產品的高光效與長壽命，運用黑白對比營造科技感。",
-                image: "image_8b0cc8.jpg",
-                images: [
-                    "image_8b0cc8.jpg",
-                    "https://images.unsplash.com/photo-1558655146-d09347e0c766?q=80&w=1000&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop"
-                ]
-            },
-            {
-                id: 2,
-                title: "宣傳海報設計 2",
-                category: "posters",
-                type: "gallery",
-                description: "宣傳光板燈之主視覺海報系列二。採用更柔和的藍色調，適合醫療與辦公環境推廣。",
-                image: "https://images.unsplash.com/photo-1626785774573-4b799314346d?q=80&w=1000&auto=format&fit=crop",
-                images: ["https://images.unsplash.com/photo-1626785774573-4b799314346d?q=80&w=1000&auto=format&fit=crop"]
-            },
-            {
-                id: 3,
-                title: "金鍏電子 V.13 版產品型錄",
-                category: "catalogs",
-                type: "pdf",
-                link: "#",
-                description: "2024年度完整產品型錄，包含超過500項電子零件規格。設計講求清晰易讀，並加入索引標籤方便查閱。",
-                image: "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=1000&auto=format&fit=crop"
-            },
-            {
-                id: 4,
-                title: "碳費徵收相關機制簡報",
-                category: "presentations",
-                type: "canva",
-                link: "https://www.canva.com/design/play?template=EAE-0G-Hn-w", // 範例
-                description: "針對企業內部培訓製作的互動式簡報，解釋複雜的碳費計算機制。",
-                image: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1000&auto=format&fit=crop"
-            },
-            {
-                id: 5,
-                title: "產品技術分析簡報",
-                category: "presentations",
-                type: "pdf",
-                link: "#",
-                description: "深度技術分析報告，運用大量圖表與數據視覺化。",
-                image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=1000&auto=format&fit=crop"
-            },
-            {
-                id: 6,
-                title: "企業形象 T-shirt",
-                category: "merchandise",
-                type: "gallery",
-                description: "員工制服與活動贈品設計。以簡約的線條勾勒企業核心價值。",
-                image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop",
-                images: [
-                    "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop",
-                    "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=1000&auto=format&fit=crop"
-                ]
-            },
-            {
-                id: 7,
-                title: "官方網站改版設計",
-                category: "web-design",
-                type: "gallery",
-                description: "響應式網頁設計專案，包含 UI/UX 規劃與前端切版。",
-                image: "https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1000&auto=format&fit=crop",
-                images: ["https://images.unsplash.com/photo-1547658719-da2b51169166?q=80&w=1000&auto=format&fit=crop"]
-            }
-        ];
+    <!-- 這裡引用外部 data.js -->
+    <script src="data.js"></script>
 
-        // --- 變數與元素 ---
+    <script>
+        // 變數宣告
         const galleryContainer = document.getElementById('galleryContainer');
         const scrollContainer = document.getElementById('scrollContainer');
         const listView = document.getElementById('listView');
         const detailView = document.getElementById('detailView');
         const pageTitle = document.getElementById('pageTitle');
         const navBtns = document.querySelectorAll('.nav-btn');
-
-        // 詳情頁元素
+        
         const detailTitle = document.getElementById('detailTitle');
-        const detailCategory = document.getElementById('detailCategory');
         const detailDesc = document.getElementById('detailDesc');
-        const detailStack = document.getElementById('detailStack');
-        const detailActions = document.getElementById('detailActions');
+        const waterfallArea = document.getElementById('waterfallArea');
+        const embedArea = document.getElementById('embedArea');
+        const actionArea = document.getElementById('actionArea');
+        const detailCategoryBadge = document.getElementById('detailCategoryBadge');
 
         // 初始化
         window.onload = () => {
+            // 檢查 data.js 是否載入成功
+            if (typeof portfolioData === 'undefined') {
+                galleryContainer.innerHTML = `
+                    <div style="padding:40px; text-align:center; color:#e74c3c;">
+                        <i class="fas fa-exclamation-circle" style="font-size:3rem; margin-bottom:15px;"></i>
+                        <h3>無法讀取資料檔案</h3>
+                        <p>請確認 <b>data.js</b> 是否存在於相同目錄下。</p>
+                        <p style="font-size:0.9rem; color:#666; margin-top:10px;">
+                            (注意：若您是直接開啟 HTML 檔案，瀏覽器可能會因為 CORS 安全策略阻擋讀取外部 JS。<br>
+                            請將檔案上傳至 GitHub 或使用 Local Server 開啟即可正常顯示。)
+                        </p>
+                    </div>`;
+                return;
+            }
             filterGallery('all');
         };
 
-        // --- 渲染卡片列表 (已更名為 filterGallery 以配合 HTML onclick) ---
+        // --- 1. 列表渲染邏輯 ---
         function filterGallery(category, btnElement) {
-            // 如果是在詳情頁點擊導航，先返回列表
-            closeDetail(false);
+            closeDetail(false); // 切換分類時確保返回列表
 
-            // 更新按鈕狀態
+            // 更新按鈕樣式
             if (btnElement) {
                 navBtns.forEach(btn => btn.classList.remove('active'));
                 btnElement.classList.add('active');
                 
-                // 更新標題
-                const icon = btnElement.querySelector('i').className;
-                const text = btnElement.innerText;
-                pageTitle.innerHTML = `<i class="${icon}" style="margin-right:10px;"></i>${text}`;
+                const iconClass = btnElement.querySelector('i').className;
+                const text = btnElement.querySelector('span').innerText;
+                pageTitle.innerHTML = `<i class="${iconClass}" style="margin-right:10px; color:var(--accent-color);"></i>${text}`;
             }
 
             // 篩選數據
@@ -550,99 +468,119 @@
                 ? portfolioData 
                 : portfolioData.filter(item => item.category === category);
 
-            // 生成 HTML
+            // 生成卡片
             galleryContainer.innerHTML = '';
             filtered.forEach((item, index) => {
-                const delay = index * 0.1;
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.style.animation = `fadeInUp 0.6s ease forwards ${delay}s`;
-                card.style.opacity = '0'; // 初始隱藏等待動畫
-                
-                // 決定卡片封面圖 (優先使用 image, 若無則取 images[0])
-                const coverImg = item.image || (item.images && item.images[0]) || '';
+                card.style.animationDelay = `${index * 0.05}s`; 
+
+                // 封面圖邏輯：優先找 image 欄位，沒有則找 images[0]
+                let coverImg = item.image;
+                if (!coverImg && item.images && item.images.length > 0) {
+                    coverImg = item.images[0];
+                }
+                if (!coverImg) coverImg = 'https://via.placeholder.com/400x300?text=No+Image';
+
+                let badgeText = item.type ? item.type.toUpperCase() : 'GALLERY';
+                if(item.type === 'pdf') badgeText = 'PDF / Catalog';
 
                 card.innerHTML = `
-                    <img src="${coverImg}" class="card-img" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
+                    <div class="card-img-wrapper">
+                        <span class="card-badge">${badgeText}</span>
+                        <img src="${coverImg}" class="card-img" alt="${item.title}" onerror="this.src='https://via.placeholder.com/400x300?text=Image+Error'">
+                    </div>
                     <div class="card-info">
                         <div class="card-title">${item.title}</div>
-                        <div class="card-type">${mapCategoryName(item.category)} | ${item.type}</div>
+                        <div class="card-desc">${item.description || '點擊查看完整內容...'}</div>
                     </div>
                 `;
                 
-                // 點擊事件：開啟詳情頁 (取代 Lightbox)
                 card.onclick = () => openDetail(item);
-                
                 galleryContainer.appendChild(card);
             });
         }
 
-        function mapCategoryName(cat) {
-            const map = {
-                'posters': '海報設計',
-                'catalogs': '產品型錄',
-                'presentations': '簡報專案',
-                'merchandise': '周邊設計',
-                'web-design': '網頁設計'
-            };
-            return map[cat] || 'Design';
-        }
-
-        // --- 開啟詳情頁 (右側頁內切換) ---
+        // --- 2. 詳情頁渲染邏輯 (瀑布流 + 嵌入) ---
         function openDetail(item) {
-            // 1. 填充內容
+            // 填充文字
             detailTitle.innerText = item.title;
-            detailCategory.innerText = mapCategoryName(item.category);
-            detailDesc.innerText = item.description || "暫無詳細描述。";
-            
-            // 2. 清空並重建圖片堆疊
-            detailStack.innerHTML = '';
-            
-            if (item.type === 'canva') {
-                // 如果是 Canva 或影片，顯示 iframe
-                const iframeHTML = `
-                    <div class="iframe-container">
-                        <iframe src="${item.link}" allowfullscreen></iframe>
-                    </div>
-                `;
-                detailStack.innerHTML = iframeHTML;
-            } else {
-                // 如果是圖片，垂直堆疊渲染
-                const imagesToShow = item.images && item.images.length > 0 ? item.images : [item.image];
-                
-                imagesToShow.forEach(imgSrc => {
+            detailDesc.innerText = item.description || "";
+            detailCategoryBadge.innerText = (item.category || "").toUpperCase();
+
+            // 重置區塊
+            waterfallArea.innerHTML = '';
+            embedArea.innerHTML = '';
+            actionArea.style.display = 'none';
+            actionArea.innerHTML = '';
+
+            // A. 處理圖片 (瀑布流堆疊)
+            // 將所有可用圖片放入陣列
+            let imagesToShow = [];
+            if (item.images && item.images.length > 0) {
+                imagesToShow = item.images;
+            } else if (item.image) {
+                imagesToShow = [item.image];
+            }
+
+            // 如果有圖片，就渲染出來
+            if (imagesToShow.length > 0) {
+                imagesToShow.forEach(src => {
                     const img = document.createElement('img');
-                    img.src = imgSrc;
-                    img.className = 'detail-img-item';
+                    img.src = src;
+                    img.className = 'waterfall-img';
+                    img.loading = "lazy";
                     img.onerror = function() { this.style.display='none'; };
-                    detailStack.appendChild(img);
+                    waterfallArea.appendChild(img);
                 });
+                waterfallArea.style.display = 'flex';
+            } else {
+                waterfallArea.style.display = 'none';
             }
 
-            // 3. 處理操作按鈕 (PDF下載等)
-            detailActions.innerHTML = '';
-            if (item.type === 'pdf' && item.link) {
-                detailActions.innerHTML = `<a href="${item.link}" target="_blank" class="action-btn"><i class="fas fa-file-pdf"></i> 瀏覽完整 PDF</a>`;
-            } else if (item.link && item.type !== 'canva') {
-                detailActions.innerHTML = `<a href="${item.link}" target="_blank" class="action-btn"><i class="fas fa-external-link-alt"></i> 前往連結</a>`;
+            // B. 處理 Canva / PDF 嵌入
+            if (item.type === 'canva' && item.link) {
+                const iframe = document.createElement('iframe');
+                iframe.src = item.link;
+                iframe.className = 'embed-container';
+                iframe.allow = "fullscreen";
+                embedArea.appendChild(iframe);
+            } 
+            else if (item.type === 'pdf' && item.link) {
+                // PDF 策略：
+                // 1. 顯示大按鈕 (因為 OneDrive 連結有時無法嵌入)
+                actionArea.style.display = 'block';
+                actionArea.innerHTML = `
+                    <p style="margin-bottom:15px; font-weight:bold; color:#555;">此專案為 PDF 文件</p>
+                    <a href="${item.link}" target="_blank" class="pdf-btn">
+                        <i class="fas fa-file-pdf"></i> 在新視窗開啟完整 PDF
+                    </a>
+                `;
+
+                // 2. 嘗試嵌入 (使用者可直接預覽，如果失敗則有上面的按鈕)
+                const iframe = document.createElement('iframe');
+                iframe.src = item.link; 
+                iframe.className = 'embed-container';
+                // 這裡直接顯示，依賴上面的按鈕作為備案
+                embedArea.appendChild(iframe);
             }
 
-            // 4. 切換視圖動畫
+            // 切換視圖
             listView.style.display = 'none';
             detailView.classList.add('active');
             
-            // 5. 滾動到頂部
-            scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            // 瞬間滾動到頂部 (因為是內容變更，不需要平滑滾動)
+            scrollContainer.scrollTo({ top: 0, behavior: 'auto' });
         }
 
-        // --- 關閉詳情頁 (返回列表) ---
         function closeDetail(scrollBack = true) {
             detailView.classList.remove('active');
-            setTimeout(() => {
-                listView.style.display = 'block';
-                // 稍微延遲讓動畫順暢
-                if(scrollBack) scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
-            }, 50); // 這裡可以設為 0 或小延遲
+            listView.style.display = 'block';
+            
+            // 返回列表時，平滑滾動回頂部
+            if (scrollBack) {
+                scrollContainer.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         }
 
     </script>
