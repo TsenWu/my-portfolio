@@ -2,7 +2,7 @@ const portfolioData = [
   // --- 1. 海報類 (多圖模式) ---
   {
     category: "posters",
-    title: "宣傳海報設計 1 (多圖展示)",
+    title: "金鍏電子_宣傳海報設計 1 (多圖展示)",
     images: [
       "posters/金鍏_海報A (1).jpg", 
       "posters/金鍏_海報A (2).jpg", 
@@ -13,13 +13,69 @@ const portfolioData = [
   },
   {
     category: "posters",
-    title: "宣傳海報設計 2 (多圖展示)",
+    title: "金鍏電子_宣傳海報設計 2 (多圖展示)",
     images: [
        "posters/金鍏_海報B (1).jpg",
        "posters/金鍏_海報B (2).jpg"
     ],
     description: "宣傳光板燈之主視覺海報。"
   },
+  {
+    category: "posters",
+    title: "金鍏電子_宣傳海報設計 3 (多圖展示)",
+    images: [
+       "posters/金鍏_海報C (1).jpg",
+       "posters/金鍏_海報C (2).jpg",
+       "posters/金鍏_海報C (3).jpg",
+    ],
+    description: "宣傳光板燈之主視覺海報。"
+  },
+  {
+    category: "posters",
+    title: "愛華國際_電視海報 (多圖展示)",
+    images: [
+       "posters/AIWA-海報A_01.jpg",
+       "posters/AIWA-海報A_02.jpg",
+       "posters/AIWA-海報B_01.jpg",
+       "posters/AIWA-海報B_02.jpg",
+       "posters/AIWA-海報C_01.jpg",
+       "posters/AIWA-海報C_02.jpg"
+    ],
+    description: "為各國代理製作之電視主視覺海報。"
+  },
+  {
+    category: "posters",
+    title: "虎山實業_汽車配件海報 (多圖展示)",
+    images: [
+       "posters/虎山-海報內把手 (2).jpg",
+       "posters/虎山-海報升降機 (2).jpg",
+       "posters/虎山-海報外把手 (2).jpg",
+       "posters/虎山-海報扣件 (2).jpg",
+    ],
+    description: "汽車各類配件之主視覺海報。"
+  },
+  {
+    category: "posters",
+    title: "虎山實業_汽車配件海報 (多圖展示)",
+    images: [
+       "posters/虎山-海報超長幅 (1).jpg",
+       "posters/虎山-海報超長幅 (2).jpg",
+    ],
+    description: "汽車各類配件之主視覺海報。"
+  },
+  {
+    category: "posters",
+    title: "虎山實業_主視覺海報 (多圖展示)",
+    images: [
+       "posters/虎山-海報虎頭 (1).jpg",
+       "posters/虎山-海報虎頭 (2).jpg",
+       "posters/虎山-海報虎頭 (3).jpg",
+       "posters/虎山-海報虎頭 (4).jpg",
+    ],
+    description: "公司形象主視覺海報及周邊。"
+  },
+
+
 
   // --- 2. 型錄類 (OneDrive PDF) ---
   {
@@ -98,14 +154,58 @@ const portfolioData = [
     link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0tVUCAAAAAZ8FwBbXR9TGI9NgOjhsC-s?e=RukvHF", 
     type: "pdf"
   },
+
+  // --- 4. 網站設計類 (混搭示範) ---
+  {
+    category: "web-design",
+    title: "金鍏電子_網站架構提報",
+    images: [
+        "web-design/金鍏網頁樹狀架構圖.jpg",
+    ],
+    description: "構思整個網站架構並提交給網頁設計公司。"
+  },
+  {
+    category: "web-design",
+    title: "金鍏電子_網頁畫面一覽",
+    images: [
+        "web-design/GW官網_桌電0.png",
+        "web-design/GW官網_桌電1.jpg",
+        "web-design/GW官網_桌電3.jpg",
+        "web-design/GW官網_桌電4.jpg",
+        "web-design/GW官網_手機1.jpg",
+        "web-design/GW官網_手機2.jpg",
+        "web-design/GW官網_手機3.jpg",
+        "web-design/GW官網_手機4.jpg",
+    ],
+    description: "網頁畫面在電腦版&手機版呈現"
+  },
     
-  // --- 4. 周邊設計 (merchandise) ---
+  // --- 5. 周邊設計 (merchandise) ---
   {
     category: "merchandise",
     title: "企業形象 T-shirt",
     images: [
-        "merchandise/AIWA_衣服 (1).jpg"
+        "merchandise/AIWA_衣服 (1).jpg",
+        "merchandise/AIWA_衣服 (2).jpg"
     ],
     description: "員工制服與活動贈品設計。"
-  }
+  },
+  {
+    category: "merchandise",
+    title: "企業形象 收納袋",
+    images: [
+        "merchandise/AIWA_收納袋.jpg"
+    ],
+    description: "無線藍牙耳機活動贈品設計。"
+  },
+  {
+    category: "merchandise",
+    title: "企業形象 佈置旗幟",
+    images: [
+        "merchandise/AIWA_旗幟 (1).jpg",
+        "merchandise/AIWA_旗幟 (2).jpg",
+        "merchandise/AIWA_旗幟 (3).jpg",
+    ],
+    description: "無線藍牙耳機活動贈品設計。"
+  },
 ];
