@@ -52,7 +52,7 @@
 
         /* --- 3. 左側固定側邊欄 (Sidebar) --- */
         .sidebar {
-            width: 280px;
+width: 280px;
             background: var(--glass-sidebar);
             border-right: 1px solid rgba(0,0,0,0.05);
             padding: 40px 25px;
@@ -60,6 +60,8 @@
             flex-direction: column;
             flex-shrink: 0;
             z-index: 10;
+            /* ★ 新增這一行：強制隱藏左右滾動條 */
+            overflow-x: hidden; 
         }
 
         .brand { margin-bottom: 50px; padding-left: 10px; }
@@ -200,8 +202,11 @@
             padding: 15px 0; margin-bottom: 30px; z-index: 50;
             border-bottom: 1px solid rgba(0,0,0,0.05);
             display: flex; justify-content: space-between; align-items: center;
+            /* ★ 新增這兩行：確保它寬度是滿的，不會卡一半 */
+            width: 100%;
+            box-sizing: border-box; 
+            /* 讓它往左負邊移一點，抵消外層的 padding (視情況微調，這裡先讓它填滿就好) */
         }
-
         .back-btn {
             border: 1px solid #ddd; background: white;
             color: var(--primary-color); padding: 8px 20px;

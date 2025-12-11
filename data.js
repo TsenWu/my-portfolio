@@ -148,7 +148,7 @@ const portfolioData = [
         "presentations/金鍏_利弊分析書冊 (2).png",
         "presentations/金鍏_利弊分析書冊 (3).png"
     ],
-    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0tVUCAAAAAZ8FwBbXR9TGI9NgOjhsC-s?e=RukvHF", 
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQSjbqwHY1Q9IIA0tVUCAAAAAZ1kCtsOZy2grYnWWe1BgcE", 
     type: "pdf"
   },
 
