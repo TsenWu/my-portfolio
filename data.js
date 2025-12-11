@@ -70,7 +70,7 @@ const portfolioData = [
        "posters/虎山-海報虎頭 (1).jpg",
        "posters/虎山-海報虎頭 (2).jpg",
        "posters/虎山-海報虎頭 (3).jpg",
-       "posters/虎山-海報虎頭 (4).jpg",
+       "posters/虎山-海報虎頭-(4).jpg",
     ],
     description: "公司形象主視覺海報及周邊。"
   },
