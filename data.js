@@ -38,6 +38,42 @@ images: [
     type: "pdf"
   },
 
+    title: "愛華國際公司簡介",
+images: [
+        "AIWA_公司簡介 (1).jpg", 
+        "AIWA_公司簡介 (2).png",     
+    ],
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0hfsAAAAAAcfEVcFx7qjAamW6d9VxcyQ?e=HYusAn",
+    type: "pdf"
+  },
+
+    title: "愛華國際產品介紹_直式中文版",
+images: [
+        "AIWA_型錄 (2).png", 
+    ],
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0wkIAAAAAAX4fBjMbxhHvn64x7tmdJss?e=WWUosG",
+    type: "pdf"
+  },
+
+    title: "愛華國際產品介紹_Earphone",
+images: [
+        "AIWA_型錄_耳機系列 (1).png", 
+        "AIWA_型錄_耳機系列 (2).png",     
+    ],
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0XEIAAAAAATfaG6jQ3dYlLlukWLLKkmk?e=tymyln",
+    type: "pdf"
+  },
+
+    title: "愛華國際產品介紹_遠傳藍牙喇叭專案",
+images: [
+        "AIWA_型錄 (1).png", 
+    ],
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0t0IAAAAAAaZKQRAGw-p0GpLbw4HSfj4?e=649yOm",
+    type: "pdf"
+  },
+
+
+
   // --- 3. 簡報類 (混搭示範) ---
   {
     category: "presentations",
