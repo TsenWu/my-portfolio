@@ -75,8 +75,6 @@ const portfolioData = [
     description: "公司形象主視覺海報及周邊。"
   },
 
-
-
   // --- 2. 型錄類 (OneDrive PDF) ---
   {
     category: "catalogs",
@@ -93,8 +91,6 @@ const portfolioData = [
     link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0Ik8CAAAAAfHX2pXVt08S_ruGi7y56Nk?e=34lcEI",
     type: "pdf"
   },
-  
-  // --- 以下是愛華國際系列 (我幫您補上了括號與路徑) ---
   {
     category: "catalogs",
     title: "愛華國際公司簡介",
@@ -138,7 +134,8 @@ const portfolioData = [
   {
     category: "presentations",
     title: "碳費徵收相關機制簡報 (Canva)",
-    image: "presentations/(延伸)碳費徵收相關機制簡報.jpg",
+    // 如果沒有 images 陣列，請確保至少有一個 image 欄位作為封面
+    image: "presentations/(延伸)碳費徵收相關機制簡報.jpg", 
     link: "https://www.canva.com/design/DAGVf0SdmTs/nIGzL34ekdDe7TorcfpU9A/view?embed",
     type: "canva"
   },
