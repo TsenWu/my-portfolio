@@ -25,54 +25,58 @@ const portfolioData = [
   {
     category: "catalogs",
     title: "金鍏電子 V.13版產品型錄",
-images: [
+    images: [
         "catalogs/金鍏_V.13_公司產品型錄 (1).png", 
-        "catalogs/金鍏_V.13_公司產品型錄 (2).png", // 假設您有更多內頁圖
+        "catalogs/金鍏_V.13_公司產品型錄 (2).png", 
         "catalogs/金鍏_V.13_公司產品型錄 (3).png",
         "catalogs/金鍏_V.13_公司產品型錄 (4).png",
         "catalogs/金鍏_V.13_公司產品型錄 (5).png",
         "catalogs/金鍏_V.13_公司產品型錄 (6).jpg",
-        "catalogs/金鍏_V.13_公司產品型錄 (7).jpg",
+        "catalogs/金鍏_V.13_公司產品型錄 (7).jpg"
     ],
     link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0Ik8CAAAAAfHX2pXVt08S_ruGi7y56Nk?e=34lcEI",
     type: "pdf"
   },
-
+  
+  // --- 以下是愛華國際系列 (我幫您補上了括號與路徑) ---
+  {
+    category: "catalogs",
     title: "愛華國際公司簡介",
-images: [
-        "AIWA_公司簡介 (1).jpg", 
-        "AIWA_公司簡介 (2).png",     
+    images: [
+        "catalogs/AIWA_公司簡介 (1).jpg", 
+        "catalogs/AIWA_公司簡介 (2).png"      
     ],
     link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0hfsAAAAAAcfEVcFx7qjAamW6d9VxcyQ?e=HYusAn",
     type: "pdf"
   },
-
+  {
+    category: "catalogs",
     title: "愛華國際產品介紹_直式中文版",
-images: [
-        "AIWA_型錄 (2).png", 
+    images: [
+        "catalogs/AIWA_型錄 (2).png"
     ],
     link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0wkIAAAAAAX4fBjMbxhHvn64x7tmdJss?e=WWUosG",
     type: "pdf"
   },
-
+  {
+    category: "catalogs",
     title: "愛華國際產品介紹_Earphone",
-images: [
-        "AIWA_型錄_耳機系列 (1).png", 
-        "AIWA_型錄_耳機系列 (2).png",     
+    images: [
+        "catalogs/AIWA_型錄_耳機系列 (1).png", 
+        "catalogs/AIWA_型錄_耳機系列 (2).png"      
     ],
     link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0XEIAAAAAATfaG6jQ3dYlLlukWLLKkmk?e=tymyln",
     type: "pdf"
   },
-
+  {
+    category: "catalogs",
     title: "愛華國際產品介紹_遠傳藍牙喇叭專案",
-images: [
-        "AIWA_型錄 (1).png", 
+    images: [
+        "catalogs/AIWA_型錄 (1).png"
     ],
     link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0t0IAAAAAAaZKQRAGw-p0GpLbw4HSfj4?e=649yOm",
     type: "pdf"
   },
-
-
 
   // --- 3. 簡報類 (混搭示範) ---
   {
@@ -85,7 +89,6 @@ images: [
   {
     category: "presentations",
     title: "產品技術分析簡報 (PDF)",
-    // 這裡我補上了 presentations/ 路徑，並加上了逗號
     images: [ 
         "presentations/金鍏_利弊分析書冊 (1).png",
         "presentations/金鍏_利弊分析書冊 (2).jpg",
