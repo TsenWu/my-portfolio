@@ -70,7 +70,7 @@ const portfolioData = [
        "posters/虎山-海報虎頭 (1).jpg",
        "posters/虎山-海報虎頭 (2).jpg",
        "posters/虎山-海報虎頭 (3).jpg",
-       "posters/虎山-海報虎頭-(4).jpg",
+       "posters/虎山-海報虎頭 (4).jpg",
     ],
     description: "公司形象主視覺海報及周邊。"
   },
@@ -88,7 +88,7 @@ const portfolioData = [
         "catalogs/金鍏_V.13_公司產品型錄 (6).jpg",
         "catalogs/金鍏_V.13_公司產品型錄 (7).jpg"
     ],
-    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0Ik8CAAAAAfHX2pXVt08S_ruGi7y56Nk?e=34lcEI",
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQSjbqwHY1Q9IIA0Ik8CAAAAAYHhTU3axiEVsDFr0sGlgkg",
     type: "pdf"
   },
   {
@@ -98,7 +98,7 @@ const portfolioData = [
         "catalogs/AIWA_公司簡介 (1).jpg", 
         "catalogs/AIWA_公司簡介 (2).png"      
     ],
-    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0hfsAAAAAAcfEVcFx7qjAamW6d9VxcyQ?e=HYusAn",
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQSjbqwHY1Q9IIA0hfsAAAAAAe1iHKs8JDa8vU4snj_z9u8",
     type: "pdf"
   },
   {
@@ -107,7 +107,7 @@ const portfolioData = [
     images: [
         "catalogs/AIWA_型錄 (2).png"
     ],
-    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0wkIAAAAAAX4fBjMbxhHvn64x7tmdJss?e=WWUosG",
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQSjbqwHY1Q9IIA0wkIAAAAAAbGLxceR5AVdUbTwbrjBpaY",
     type: "pdf"
   },
   {
@@ -117,7 +117,7 @@ const portfolioData = [
         "catalogs/AIWA_型錄_耳機系列 (1).png", 
         "catalogs/AIWA_型錄_耳機系列 (2).png"      
     ],
-    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0XEIAAAAAATfaG6jQ3dYlLlukWLLKkmk?e=tymyln",
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQSjbqwHY1Q9IIA0XEIAAAAAAf50WT2-cCTx2t2UBeNLj38",
     type: "pdf"
   },
   {
@@ -126,7 +126,7 @@ const portfolioData = [
     images: [
         "catalogs/AIWA_型錄 (1).png"
     ],
-    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQCjbqwHY1Q9IIA0t0IAAAAAAaZKQRAGw-p0GpLbw4HSfj4?e=649yOm",
+    link: "https://1drv.ms/b/c/343d546307ac6ea3/IQSjbqwHY1Q9IIA0t0IAAAAAARcvUACxaaiaJCapo9498pg",
     type: "pdf"
   },
 
