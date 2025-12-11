@@ -23,7 +23,7 @@
 
         /* --- 1. 全局背景與佈局 --- */
         body {
-            /* 背景圖：您可以換回原本喜歡的自然風景 */
+            /* 背景圖 */
             background: url('https://images.unsplash.com/photo-1434907714621-289291ffea37?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') no-repeat center center fixed;
             background-size: cover;
             height: 100vh;
@@ -52,16 +52,17 @@
 
         /* --- 3. 左側固定側邊欄 (Sidebar) --- */
         .sidebar {
-width: 280px;
+            width: 280px;
             background: var(--glass-sidebar);
             border-right: 1px solid rgba(0,0,0,0.05);
-            padding: 40px 25px;
+            /* 修改：調整內距 */
+            padding: 40px 20px 40px 25px; 
             display: flex;
             flex-direction: column;
             flex-shrink: 0;
             z-index: 10;
-            /* ★ 新增這一行：強制隱藏左右滾動條 */
-            overflow-x: hidden; 
+            /* ★ 關鍵修正 1：強制隱藏 Sidebar 本體的所有捲軸 */
+            overflow: hidden; 
         }
 
         .brand { margin-bottom: 50px; padding-left: 10px; }
@@ -73,8 +74,17 @@ width: 280px;
             flex-direction: column;
             gap: 10px;
             flex: 1;
+            /* ★ 關鍵修正 2：捲動行為交給內部選單，並隱藏 X 軸 */
             overflow-y: auto;
+            overflow-x: hidden;
+            /* 預留右側空間給按鈕滑動效果，避免觸發捲軸 */
+            padding-right: 10px; 
         }
+
+        /* 美化側邊欄選單的捲軸 (如果項目太多出現時) */
+        .nav-menu::-webkit-scrollbar { width: 4px; }
+        .nav-menu::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+        .nav-menu::-webkit-scrollbar-track { background: transparent; }
 
         .nav-btn {
             display: flex;
@@ -89,6 +99,7 @@ width: 280px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: left;
             font-weight: 600;
+            width: 100%; /* 確保按鈕寬度佔滿容器 */
         }
 
         .nav-btn i { width: 35px; font-size: 1.1rem; text-align: center; transition: 0.3s; }
@@ -114,6 +125,8 @@ width: 280px;
             background: rgba(255,255,255,0.4); /* 微微透白 */
             display: flex;
             flex-direction: column;
+            /* 確保右側內容區本身不產生捲軸，捲軸交給內部的 viewport */
+            overflow: hidden; 
         }
 
         /* 捲動區域與美化捲軸 */
@@ -190,23 +203,33 @@ width: 280px;
 
         /* --- 5. 瀑布流詳情頁 --- */
         .detail-view {
-            display: none; flex-direction: column;
+            display: none; 
+            flex-direction: column;
             animation: slideIn 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            max-width: 1000px; margin: 0 auto; width: 100%; padding-bottom: 60px;
+            
+            /* ★ 關鍵修正 3：移除最大寬度限制，改為 100% 滿版 */
+            width: 100%; 
+            max-width: none; 
+            margin: 0; 
+            padding-bottom: 60px;
         }
         .detail-view.active { display: flex; }
 
         .detail-nav-bar {
             position: sticky; top: 0;
             background: rgba(255,255,255,0.85); backdrop-filter: blur(15px);
-            padding: 15px 0; margin-bottom: 30px; z-index: 50;
+            /* 調整內距讓視覺不擁擠 */
+            padding: 15px 30px; 
+            margin-bottom: 30px; 
+            z-index: 50;
             border-bottom: 1px solid rgba(0,0,0,0.05);
             display: flex; justify-content: space-between; align-items: center;
-            /* ★ 新增這兩行：確保它寬度是滿的，不會卡一半 */
+            
+            /* ★ 關鍵修正 4：確保橫條寬度為 100% */
             width: 100%;
             box-sizing: border-box; 
-            /* 讓它往左負邊移一點，抵消外層的 padding (視情況微調，這裡先讓它填滿就好) */
         }
+        
         .back-btn {
             border: 1px solid #ddd; background: white;
             color: var(--primary-color); padding: 8px 20px;
@@ -264,7 +287,7 @@ width: 280px;
         /* RWD */
         @media (max-width: 768px) {
             .app-container { width: 100vw; height: 100vh; border-radius: 0; flex-direction: column; }
-            .sidebar { width: 100%; padding: 15px 20px; flex-direction: row; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); background: white; height: 70px; }
+            .sidebar { width: 100%; padding: 15px 20px; flex-direction: row; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(0,0,0,0.05); background: white; height: 70px; overflow: visible; }
             .brand { margin-bottom: 0; padding: 0; }
             .brand h1 { font-size: 1.4rem; margin: 0; }
             .brand p { display: none; }
