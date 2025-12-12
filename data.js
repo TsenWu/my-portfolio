@@ -225,7 +225,7 @@ const portfolioData = [
     type: "html",
     description: "視覺化統計圖表練習。",
     note: "使用圖表套件將複雜的統計數據轉化為視覺化圖表。<br>重點在於資料的清理與格式轉換，讓使用者能一目了然看懂趨勢變化。"
-  }
+  },
   {
     category: "demos",
     title: "lottie-動態舔舔狗",
