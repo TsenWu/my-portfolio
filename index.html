@@ -126,7 +126,7 @@
             margin-bottom: 40px;
             border-bottom: 1px solid rgba(0,0,0,0.05);
             padding-bottom: 20px;
-            animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1); /* 優化動畫曲線 */
+            animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .section-header h2 { font-size: 2rem; color: var(--primary-color); margin-bottom: 10px; }
         .section-header p { color: var(--text-secondary); font-size: 1rem; }
@@ -137,7 +137,6 @@
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 35px;
             padding-bottom: 80px;
-            /* 讓整個 Grid 也淡入 */
             animation: fadeIn 1s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
@@ -150,8 +149,6 @@
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex; flex-direction: column;
-            
-            /* 初始狀態給一點透明與位移，讓JS或Animation控制 */
             opacity: 0; 
             animation: cardPopIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
@@ -173,12 +170,10 @@
             max-width: 1100px; 
             margin: 0 auto;
             padding-bottom: 60px;
-            /* 詳情頁開啟時的整體動畫 */
             animation: slideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
         .detail-view.active { display: flex; }
 
-        /* 導航列 */
         .detail-nav-bar {
             position: sticky; top: 0;
             background: transparent; 
@@ -191,14 +186,13 @@
             width: 100%;
         }
         
-        /* ★ 共用按鈕樣式：讓「返回」跟「下則」長得一樣 */
         .nav-pill-btn {
             border: 1px solid rgba(0,0,0,0.1); 
             background: rgba(255,255,255,0.9);
             backdrop-filter: blur(5px);
             color: var(--primary-color); 
-            padding: 10px 24px; /* 加大一點點讓視覺更舒適 */
-            border-radius: 50px; /* 膠囊圓弧 */
+            padding: 10px 24px; 
+            border-radius: 50px; 
             cursor: pointer; 
             font-weight: 600; 
             font-size: 0.95rem;
@@ -213,12 +207,34 @@
             color: var(--accent-color);
             border-color: var(--accent-color);
             box-shadow: 0 8px 15px rgba(0, 109, 174, 0.15);
-            transform: translateY(-2px); /* 懸浮感 */
+            transform: translateY(-2px);
         }
         
         .detail-header { margin-bottom: 40px; }
         .detail-title { font-size: 2rem; font-weight: 800; color: var(--primary-color); margin-bottom: 10px; }
         .detail-meta { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
+
+        /* --- ★ 新增：心得註解區塊樣式 --- */
+        .detail-note-box {
+            background: #f8f9fa; /* 淡灰底色 */
+            border-left: 5px solid var(--accent-color); /* 左側藍色線條 */
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            color: #444;
+            line-height: 1.8; /* 行距 */
+            font-size: 1rem;
+            white-space: pre-wrap; /* 自動換行 */
+        }
+        .detail-note-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
 
         .waterfall-container { display: flex; flex-direction: column; gap: 40px; width: 100%; }
         .waterfall-img { width: 100%; height: auto; display: block; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
@@ -232,35 +248,12 @@
         .pdf-btn:hover { background: #005a91; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,90,145,0.35); }
 
         /* --- ★ 動畫定義區 ★ --- */
-        
-        /* 1. 頁面進入動畫 (Fade Up) */
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(20px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-        
-        /* 2. 側邊進入動畫 (Slide In) */
-        @keyframes slideIn { 
-            from { opacity: 0; transform: translateX(30px); } 
-            to { opacity: 1; transform: translateX(0); } 
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes cardPopIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* 3. 卡片逐個彈出 */
-        @keyframes cardPopIn {
-            from { opacity: 0; transform: scale(0.95) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-
-        /* 4. 滾動觸發動畫 (Scroll Reveal) 的 CSS 狀態 */
-        .reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 1s cubic-bezier(0.22, 1, 0.36, 1); /* 很優雅的緩動 */
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.22, 1, 0.36, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* RWD */
         @media (max-width: 768px) {
@@ -274,7 +267,6 @@
             .main-content { padding-bottom: 80px; }
             .scroll-viewport { padding: 20px; }
             .embed-container { height: 60vh; }
-            /* 手機版按鈕小一點 */
             .nav-pill-btn { padding: 8px 16px; font-size: 0.85rem; }
         }
     </style>
@@ -307,6 +299,9 @@
                 <button class="nav-btn" onclick="filterGallery('web-design', this)">
                     <i class="fas fa-code"></i> <span>網頁設計</span>
                 </button>
+                <button class="nav-btn" onclick="filterGallery('demos', this)">
+                    <i class="fas fa-lightbulb"></i> <span>各類學習</span>
+                </button>
             </nav>
         </aside>
 
@@ -337,6 +332,8 @@
                         <p id="detailDesc" class="detail-meta">描述</p>
                     </div>
 
+                    <div id="detailNote" class="detail-note-box reveal" style="display:none;"></div>
+
                     <div id="waterfallArea" class="waterfall-container"></div>
                     <div id="embedArea"></div>
                     <div id="actionArea" class="action-area reveal" style="display:none;"></div>
@@ -358,6 +355,7 @@
         
         const detailTitle = document.getElementById('detailTitle');
         const detailDesc = document.getElementById('detailDesc');
+        const detailNote = document.getElementById('detailNote'); // ★ 新增變數
         const waterfallArea = document.getElementById('waterfallArea');
         const embedArea = document.getElementById('embedArea');
         const actionArea = document.getElementById('actionArea');
@@ -366,18 +364,16 @@
         let currentFilteredList = [];
         let currentItemIndex = -1;
         
-        // ★ 建立 IntersectionObserver 用於滾動監聽
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    // 可選：如果希望滑出去再滑回來又重新動畫，就把下面這行註解掉
                     revealObserver.unobserve(entry.target); 
                 }
             });
         }, {
-            threshold: 0.1, // 露出 10% 就觸發
-            rootMargin: "0px 0px -50px 0px" // 視窗底部稍微往上縮一點點才觸發，效果更好
+            threshold: 0.1, 
+            rootMargin: "0px 0px -50px 0px" 
         });
 
         window.onload = () => {
@@ -404,10 +400,15 @@
                 : portfolioData.filter(item => item.category === category);
 
             galleryContainer.innerHTML = '';
+            
+            if (currentFilteredList.length === 0) {
+                galleryContainer.innerHTML = '<p style="padding:20px; color:#666;">目前此分類尚無內容。</p>';
+                return;
+            }
+
             currentFilteredList.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'card';
-                // 列表頁的卡片依序彈出
                 card.style.animationDelay = `${index * 0.08}s`; 
 
                 let coverImg = item.image;
@@ -416,6 +417,7 @@
 
                 let badgeText = item.type ? item.type.toUpperCase() : 'GALLERY';
                 if(item.type === 'pdf') badgeText = 'PDF / Catalog';
+                if(item.type === 'html') badgeText = 'DEMO / HTML'; // ★ 新增類型顯示
 
                 card.innerHTML = `
                     <div class="card-img-wrapper">
@@ -439,29 +441,36 @@
                 currentItemIndex = index;
             }
 
-            // 1. 重置詳情頁動畫：先移除 active 再加入，觸發 CSS animation
             detailView.classList.remove('active');
-            void detailView.offsetWidth; // 強制重繪 (Magic Trigger)
+            void detailView.offsetWidth; 
             detailView.classList.add('active');
             
-            // 2. 滾動回頂部
             scrollContainer.scrollTo({ top: 0, behavior: 'auto' });
 
-            // 3. 填入文字資料
             detailTitle.innerText = item.title;
             detailDesc.innerText = item.description || "暫無描述";
             
-            // 重置 Header 的 Reveal 狀態
             detailHeader.classList.remove('active');
             detailHeader.classList.add('reveal');
-            revealObserver.observe(detailHeader); // 標題也要監聽
+            revealObserver.observe(detailHeader);
+
+            // ★ 新增：檢查是否有心得 (Note)，有的話顯示區塊
+            if (item.note) {
+                detailNote.style.display = 'block';
+                detailNote.classList.remove('active'); // 重置動畫
+                detailNote.classList.add('reveal');
+                // 插入內容 (含標題與內文)
+                detailNote.innerHTML = `<div class="detail-note-title"><i class="fas fa-pen-nib"></i> 學習筆記 & 心得</div>${item.note}`;
+                revealObserver.observe(detailNote);
+            } else {
+                detailNote.style.display = 'none';
+            }
 
             waterfallArea.innerHTML = '';
             embedArea.innerHTML = '';
             actionArea.style.display = 'none';
             actionArea.innerHTML = '';
             
-            // 4. 產生圖片 (加入 Reveal 效果)
             let imagesToShow = [];
             if (item.images && item.images.length > 0) {
                 imagesToShow = item.images;
@@ -470,15 +479,12 @@
             }
 
             if (imagesToShow.length > 0) {
-                imagesToShow.forEach((src, imgIndex) => {
+                imagesToShow.forEach((src) => {
                     const img = document.createElement('img');
                     img.src = src;
-                    img.className = 'waterfall-img reveal'; // ★ 加入 reveal class
+                    img.className = 'waterfall-img reveal'; 
                     img.loading = "lazy";
-                    
-                    // 加入監聽
                     revealObserver.observe(img);
-                    
                     waterfallArea.appendChild(img);
                 });
                 waterfallArea.style.display = 'flex';
@@ -486,20 +492,22 @@
                 waterfallArea.style.display = 'none';
             }
 
-            // 5. 處理嵌入 (加入 Reveal)
             if (item.type === 'canva' && item.link) {
                 renderEmbed(item.link, 'Canva 簡報');
             } 
-            else if (item.type === 'pdf' && item.link) {
-                renderEmbed(item.link, 'PDF 線上預覽');
+            // ★ 修改：同時支援 PDF 和 HTML 嵌入
+            else if ((item.type === 'pdf' || item.type === 'html') && item.link) {
+                renderEmbed(item.link, item.type === 'pdf' ? 'PDF 線上預覽' : '網頁互動預覽');
+                
                 actionArea.style.display = 'block';
-                actionArea.classList.add('reveal'); // 按鈕區也加入 reveal
+                actionArea.classList.add('reveal'); 
                 revealObserver.observe(actionArea);
                 
+                const btnText = item.type === 'pdf' ? '開啟完整 PDF' : '開啟原始網頁';
                 actionArea.innerHTML = `
                     <p style="margin-bottom:15px; color:#555;">如果上方預覽無法顯示，請點擊下方按鈕：</p>
                     <a href="${item.link}" target="_blank" class="pdf-btn">
-                        <i class="fas fa-external-link-alt"></i> 開啟完整 PDF
+                        <i class="fas fa-external-link-alt"></i> ${btnText}
                     </a>
                 `;
             }
@@ -509,18 +517,14 @@
 
         function nextProject() {
             if (currentFilteredList.length === 0) return;
-            
-            // 計算下一個
             currentItemIndex = (currentItemIndex + 1) % currentFilteredList.length;
             const nextItem = currentFilteredList[currentItemIndex];
-            
-            // 直接呼叫 openDetail，它裡面包含重置動畫的邏輯，會自動產生切換效果
             openDetail(nextItem, currentItemIndex);
         }
 
         function renderEmbed(link, label) {
             const wrapper = document.createElement('div');
-            wrapper.className = 'embed-wrapper reveal'; // ★ 加入 reveal class
+            wrapper.className = 'embed-wrapper reveal'; 
             
             const header = document.createElement('div');
             header.className = 'embed-header';
@@ -534,8 +538,6 @@
             wrapper.appendChild(header);
             wrapper.appendChild(iframe);
             embedArea.appendChild(wrapper);
-            
-            // 加入監聽
             revealObserver.observe(wrapper);
         }
 
@@ -543,7 +545,6 @@
             detailView.classList.remove('active');
             listView.style.display = 'block';
             
-            // 列表頁重新出現的動畫
             listView.style.animation = 'none';
             void listView.offsetWidth;
             listView.style.animation = 'fadeIn 0.6s ease forwards';
@@ -554,6 +555,7 @@
                 if(!detailView.classList.contains('active')) {
                     embedArea.innerHTML = '';
                     waterfallArea.innerHTML = '';
+                    detailNote.innerHTML = ''; // 清空心得
                 }
             }, 500);
         }

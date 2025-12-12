@@ -134,7 +134,6 @@ const portfolioData = [
   {
     category: "presentations",
     title: "碳費徵收相關機制簡報 (Canva)",
-    // 如果沒有 images 陣列，請確保至少有一個 image 欄位作為封面
     image: "presentations/(延伸)碳費徵收相關機制簡報.jpg", 
     link: "https://www.canva.com/design/DAGVf0SdmTs/nIGzL34ekdDe7TorcfpU9A/view?embed",
     type: "canva"
@@ -205,4 +204,24 @@ const portfolioData = [
     ],
     description: "無線藍牙耳機活動贈品設計。"
   },
+
+  // --- 6. 各類學習 (Demos) ---
+  // ★ 注意：這裡的 link 路徑是根據您截圖中 demos 資料夾的路徑設定的
+  // ★ note 欄位可以讓您自由發揮，可以寫 HTML (例如用 <br> 換行)
+  {
+    category: "demos",
+    title: "拉桿試算表 - 平板燈數量對照",
+    link: "demos/(拉桿試算表-僅拉桿及結果)平板燈數量對照.html", 
+    type: "html", 
+    description: "互動式試算表練習作品。",
+    note: "這是我在練習 JavaScript DOM 操作時的作品。<br><br>透過拉桿即時計算平板燈的排列數量，並動態顯示結果。過程中學習到了如何監聽 input 事件以及即時更新畫面數據。"
+  },
+  {
+    category: "demos",
+    title: "環境部7年綜合效益圖表",
+    link: "demos/(標籤1)環境部7年綜合效益圖表(含統計數據).html",
+    type: "html",
+    description: "視覺化統計圖表練習。",
+    note: "使用圖表套件將複雜的統計數據轉化為視覺化圖表。<br>重點在於資料的清理與格式轉換，讓使用者能一目了然看懂趨勢變化。"
+  }
 ];
