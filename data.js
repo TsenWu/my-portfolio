@@ -211,7 +211,8 @@ const portfolioData = [
   {
     category: "demos",
     title: "拉桿試算表 - 平板燈數量對照",
-    link: "https://tsenwu.github.io/goldenway-charts/(拉桿試算表-僅拉桿及結果)平板燈數量對應節電效益.html", 
+    link: "https://tsenwu.github.io/goldenway-charts/(拉桿試算表)平板燈數量對應節電效益.html", 
+    image: "demos/拉桿試算表 - 平板燈數量對照.jpg",
     type: "html", 
     description: "互動式試算表練習作品。",
     note: "這是我在練習 JavaScript DOM 操作時的作品。<br><br>透過拉桿即時計算平板燈的排列數量，並動態顯示結果。過程中學習到了如何監聽 input 事件以及即時更新畫面數據。"
@@ -220,8 +221,18 @@ const portfolioData = [
     category: "demos",
     title: "環境部7年綜合效益圖表",
     link: "https://tsenwu.github.io/goldenway-charts/(標籤1)環境部7年綜合效益圖表(含統計數字及多軸圖).html",
+    image: "demos/環境部7年綜合效益圖表.jpg",
     type: "html",
     description: "視覺化統計圖表練習。",
     note: "使用圖表套件將複雜的統計數據轉化為視覺化圖表。<br>重點在於資料的清理與格式轉換，讓使用者能一目了然看懂趨勢變化。"
+  }
+  {
+    category: "demos",
+    title: "lottie-動態舔舔狗",
+    link: "https://tsenwu.github.io/my-portfolio/demos/lottie-animation/lottie-test.html",
+    image: "demos/lottie-animation/lottie-動態舔舔狗.jpg",
+    type: "html",
+    description: "lottie動態練習。",
+    note: "使用LottieFiles在網頁上放動畫。<br>只要下載 JSON 檔，把它放到你的 GitHub，再用程式碼呼叫它，就能在網頁中呈現一個會動的動畫，檔案還超小！"
   }
 ];
