@@ -228,6 +228,15 @@ const portfolioData = [
   },
   {
     category: "demos",
+    title: "智慧照明色溫模擬",
+    link: "https://tsenwu.github.io/goldenway-charts/智慧照明色溫模擬.html",
+    image: "demos/智慧照明色溫模擬.jpg",
+    type: "html",
+    description: "視覺化設計練習。",
+    note: "使用視覺化模擬不同色溫的光照環境。<br>讓使用者能一目了然看懂不同的色溫有什麼樣不同的環境光照感受。"
+  },
+  {
+    category: "demos",
     title: "lottie-動態舔舔狗",
     link: "https://tsenwu.github.io/my-portfolio/demos/lottie-animation/lottie-test.html",
     image: "demos/lottie-animation/lottie-動態舔舔狗.jpg",

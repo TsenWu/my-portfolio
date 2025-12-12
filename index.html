@@ -58,7 +58,7 @@
             flex-direction: column;
             flex-shrink: 0;
             z-index: 10;
-            overflow: hidden;
+            overflow: hidden; /* 強制隱藏滾動條 */
         }
 
         .brand { margin-bottom: 50px; padding-left: 10px; }
@@ -71,7 +71,7 @@
             gap: 10px;
             flex: 1;
             overflow-y: auto;
-            overflow-x: hidden;
+            overflow-x: hidden; /* 強制隱藏 X 軸滾動條 */
             padding-right: 10px;
         }
         .nav-menu::-webkit-scrollbar { width: 4px; }
@@ -167,7 +167,8 @@
             display: none; 
             flex-direction: column;
             width: 100%; 
-            max-width: 1100px; 
+            /* ★ 修改：寬度設為 900px，讓左右按鈕距離更剛好 */
+            max-width: 900px; 
             margin: 0 auto;
             padding-bottom: 60px;
             animation: slideIn 0.5s cubic-bezier(0.22, 1, 0.36, 1);
@@ -182,7 +183,9 @@
             padding: 10px 0; 
             margin-bottom: 20px; 
             z-index: 50;
-            display: flex; justify-content: space-between; align-items: center;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
             width: 100%;
         }
         
@@ -214,7 +217,7 @@
         .detail-title { font-size: 2rem; font-weight: 800; color: var(--primary-color); margin-bottom: 10px; }
         .detail-meta { color: var(--text-secondary); font-size: 1rem; line-height: 1.6; }
 
-        /* --- ★ 新增：心得註解區塊樣式 --- */
+        /* 心得註解區塊樣式 */
         .detail-note-box {
             background: #f8f9fa; /* 淡灰底色 */
             border-left: 5px solid var(--accent-color); /* 左側藍色線條 */
@@ -247,7 +250,7 @@
         .pdf-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--accent-color); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: 0.3s; box-shadow: 0 6px 15px rgba(0,109,174,0.25); }
         .pdf-btn:hover { background: #005a91; transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,90,145,0.35); }
 
-        /* --- ★ 動畫定義區 ★ --- */
+        /* 動畫 */
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes cardPopIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
@@ -355,7 +358,7 @@
         
         const detailTitle = document.getElementById('detailTitle');
         const detailDesc = document.getElementById('detailDesc');
-        const detailNote = document.getElementById('detailNote'); // ★ 新增變數
+        const detailNote = document.getElementById('detailNote');
         const waterfallArea = document.getElementById('waterfallArea');
         const embedArea = document.getElementById('embedArea');
         const actionArea = document.getElementById('actionArea');
@@ -417,7 +420,7 @@
 
                 let badgeText = item.type ? item.type.toUpperCase() : 'GALLERY';
                 if(item.type === 'pdf') badgeText = 'PDF / Catalog';
-                if(item.type === 'html') badgeText = 'DEMO / HTML'; // ★ 新增類型顯示
+                if(item.type === 'html') badgeText = 'DEMO / HTML';
 
                 card.innerHTML = `
                     <div class="card-img-wrapper">
@@ -454,12 +457,11 @@
             detailHeader.classList.add('reveal');
             revealObserver.observe(detailHeader);
 
-            // ★ 新增：檢查是否有心得 (Note)，有的話顯示區塊
+            // 心得註解區塊邏輯
             if (item.note) {
                 detailNote.style.display = 'block';
-                detailNote.classList.remove('active'); // 重置動畫
+                detailNote.classList.remove('active'); 
                 detailNote.classList.add('reveal');
-                // 插入內容 (含標題與內文)
                 detailNote.innerHTML = `<div class="detail-note-title"><i class="fas fa-pen-nib"></i> 學習筆記 & 心得</div>${item.note}`;
                 revealObserver.observe(detailNote);
             } else {
@@ -471,11 +473,22 @@
             actionArea.style.display = 'none';
             actionArea.innerHTML = '';
             
+            // ★ 圖片顯示邏輯 (修正版)
             let imagesToShow = [];
+            
+            // 情況 A：如果有 images 陣列 (多圖模式)，無論什麼類型都顯示
             if (item.images && item.images.length > 0) {
                 imagesToShow = item.images;
-            } else if (item.image) {
-                imagesToShow = [item.image];
+            } 
+            // 情況 B：如果是單張 image
+            else if (item.image) {
+                // 如果是 'html', 'canva', 'pdf' 類型，隱藏單張封面圖
+                if (item.type === 'html' || item.type === 'canva' || item.type === 'pdf') {
+                    imagesToShow = []; // 不顯示
+                } else {
+                    // 其他類型 (如海報)，單張圖要顯示
+                    imagesToShow = [item.image];
+                }
             }
 
             if (imagesToShow.length > 0) {
@@ -495,7 +508,6 @@
             if (item.type === 'canva' && item.link) {
                 renderEmbed(item.link, 'Canva 簡報');
             } 
-            // ★ 修改：同時支援 PDF 和 HTML 嵌入
             else if ((item.type === 'pdf' || item.type === 'html') && item.link) {
                 renderEmbed(item.link, item.type === 'pdf' ? 'PDF 線上預覽' : '網頁互動預覽');
                 
@@ -555,7 +567,7 @@
                 if(!detailView.classList.contains('active')) {
                     embedArea.innerHTML = '';
                     waterfallArea.innerHTML = '';
-                    detailNote.innerHTML = ''; // 清空心得
+                    detailNote.innerHTML = '';
                 }
             }, 500);
         }
